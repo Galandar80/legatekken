@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Lega dello Stretto</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-cog"></i>
+            <span>Amministrazione Tornei</span>
+        </div>
+        <div class="flex-group">
+            <a href="dashboard.html" class="theme-toggle" title="Vai alla dashboard">
+                <i class="fas fa-chart-line"></i>
+            </a>
+            <a href="frontend.html" class="theme-toggle" title="Vai al frontend">
+                <i class="fas fa-home"></i>
+            </a>
+            <button id="themeToggle" class="theme-toggle" aria-label="Cambia tema">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+    
+    <div class="backend-container">
+        <!-- Sidebar con menu e filtri -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-plus-circle"></i> Nuovo Torneo</h3>
+                <div class="flex-group" style="flex-direction: column;">
+                    <input type="text" id="nuovoTorneo" placeholder="Nome torneo" style="width: 100%">
+                    <input type="text" id="tipoTorneo" placeholder="Tipo torneo (opzionale)" style="width: 100%">
+                    <input type="date" id="dataTorneo" style="width: 100%">
+                    <input type="url" id="linkChallonge" placeholder="Link Challonge (opzionale)" style="width: 100%">
+                    <button id="btnCreaTorneo" style="width: 100%"><i class="fas fa-save"></i> Crea Torneo</button>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-filter"></i> Filtri</h3>
+                <div class="flex-group" style="flex-direction: column;">
+                    <input type="text" id="cercaTorneo" placeholder="Cerca torneo..." style="width: 100%">
+                    <select id="ordinaTornei" style="width: 100%">
+                        <option value="data">Data (più recenti)</option>
+                        <option value="nome">Nome (A-Z)</option>
+                        <option value="giocatori">Numero giocatori</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-list"></i> Menu</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" id="menuTornei"><i class="fas fa-trophy"></i> Tornei</a></li>
+                    <li><a href="#" id="menuStatistiche"><i class="fas fa-chart-bar"></i> Statistiche</a></li>
+                    <li><a href="#" id="menuEventi"><i class="fas fa-calendar-alt"></i> Eventi</a></li>
+                    <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="frontend.html"><i class="fas fa-home"></i> Frontend</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Contenuto principale -->
+        <div class="main-content">
+            <!-- Sezione tornei -->
+            <div class="section" id="sezioneTornei">
+                <h2><i class="fas fa-trophy"></i> Gestione Tornei</h2>
+                <div class="torneo-grid" id="torneiGrid">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i> Caricamento tornei in corso...
+                    </div>
+                </div>
+                <div class="pagination" id="torneiPagination"></div>
+            </div>
+            
+            <!-- Sezione statistiche -->
+            <div class="section" id="sezioneStatistiche" style="display: none;">
+                <h2><i class="fas fa-chart-bar"></i> Statistiche</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTorneiTotali">0</div>
+                        <div class="stat-label">Tornei</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statGiocatoriTotali">0</div>
+                        <div class="stat-label">Giocatori</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPuntiTotali">0</div>
+                        <div class="stat-label">Punti</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statUltimoTorneo">-</div>
+                        <div class="stat-label">Ultimo Torneo</div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 20px;">Top 5 Giocatori</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pos.</th>
+                            <th>Giocatore</th>
+                            <th>Tornei</th>
+                            <th>Punti</th>
+                            <th>Media</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topGiocatoriBody">
+                        <tr>
+                            <td colspan="5" class="loading">
+                                <i class="fas fa-spinner"></i> Caricamento classifica...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Sezione gestione dettagliata torneo -->
+            <div class="section" id="gestioneTorneo" style="display: none;">
+                <div class="flex-group" style="justify-content: space-between">
+                    <h2><i class="fas fa-edit"></i> Gestione: <span id="nomeTorneoSelezionato"></span></h2>
+                    <button onclick="chiudiGestione()" class="secondary"><i class="fas fa-times"></i> Chiudi</button>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="giocatori"><i class="fas fa-users"></i> Giocatori</div>
+                    <div class="tab" data-tab="impostazioni"><i class="fas fa-cog"></i> Impostazioni</div>
+                </div>
+                
+                <!-- Tab Giocatori -->
+                <div class="tab-content active" id="tab-giocatori">
+                    <div class="flex-group">
+                        <input type="text" id="nuovoGiocatore" placeholder="Nome giocatore" style="flex-grow: 1">
+                        <button onclick="aggiungiGiocatore()"><i class="fas fa-user-plus"></i> Aggiungi</button>
+                    </div>
+                    
+                    <div class="flex-group">
+                        <input type="text" id="cercaGiocatore" placeholder="Cerca giocatore..." style="flex-grow: 1">
+                        <select id="ordinaGiocatori">
+                            <option value="punti">Punti (più alti)</option>
+                            <option value="nome">Nome (A-Z)</option>
+                            <option value="posizione">Posizione</option>
+                        </select>
+                    </div>
+                    
+                    <div class="giocatori-grid" id="giocatoriGrid">
+                        <div class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento giocatori...
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tab Impostazioni -->
+                <div class="tab-content" id="tab-impostazioni">
+                    <div class="flex-group" style="flex-direction: column; gap: 15px;">
+                        <div>
+                            <label for="editNomeTorneo">Nome Torneo:</label>
+                            <input type="text" id="editNomeTorneo" style="width: 100%">
+                        </div>
+                        <div>
+                            <label for="editTipoTorneo">Tipo Torneo:</label>
+                            <input type="text" id="editTipoTorneo" style="width: 100%">
+                        </div>
+                        <div>
+                            <label for="editDataTorneo">Data Torneo:</label>
+                            <input type="date" id="editDataTorneo" style="width: 100%">
+                        </div>
+                        <div>
+                            <label for="editLinkChallonge">Link Challonge:</label>
+                            <input type="url" id="editLinkChallonge" placeholder="https://challonge.com/it/..." style="width: 100%">
+                        </div>
+                        <button id="btnSalvaImpostazioni"><i class="fas fa-save"></i> Salva Modifiche</button>
+                        <button id="btnEliminaTorneo" style="background: #dc3545"><i class="fas fa-trash"></i> Elimina Torneo</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sezione gestione eventi -->
+            <div class="section" id="sezioneEventi" style="display: none;">
+                <h2><i class="fas fa-calendar-alt"></i> Gestione Eventi</h2>
+                
+                <div class="flex-group" style="justify-content: space-between; margin-bottom: 20px;">
+                    <h3>Eventi Programmati</h3>
+                    <button onclick="showEventoForm()" class="primary"><i class="fas fa-plus"></i> Nuovo Evento</button>
+                </div>
+                
+                <div id="eventiContainer">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i> Caricamento eventi...
+                    </div>
+                </div>
+                
+                <!-- Form per nuovo evento -->
+                <div id="eventoForm" style="display: none;" class="form-container">
+                    <h3>Aggiungi Nuovo Evento</h3>
+                    <div class="form-group">
+                        <label for="eventoNome">Nome Evento:</label>
+                        <input type="text" id="eventoNome" placeholder="Torneo Legge dello Stretto">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoData">Data:</label>
+                        <input type="date" id="eventoData">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoOrario">Orario:</label>
+                        <input type="text" id="eventoOrario" placeholder="15:30">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoLuogo">Luogo:</label>
+                        <input type="text" id="eventoLuogo" placeholder="Game Time - Via Roma, 123">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoIscrizione">Iscrizione:</label>
+                        <select id="eventoIscrizione">
+                            <option value="true">Aperta</option>
+                            <option value="false">Chiusa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoModalita">Modalità Iscrizione:</label>
+                        <input type="text" id="eventoModalita" placeholder="Whatsapp o in negozio">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoImmagine">URL Immagine:</label>
+                        <input type="url" id="eventoImmagine" placeholder="https://i.imgur.com/Y2WXnK8.jpg">
+                        <small>Dimensioni consigliate: 800x400 pixel</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoImmagineHome">URL Immagine Homepage:</label>
+                        <input type="url" id="eventoImmagineHome" placeholder="https://i.imgur.com/Y2WXnK8.jpg">
+                        <small>Dimensioni consigliate: 450x250 pixel - Questa immagine verrà visualizzata nella homepage</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoDescrizione">Descrizione:</label>
+                        <textarea id="eventoDescrizione" rows="3" placeholder="Descrizione dell'evento"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoFormato">Formato Torneo:</label>
+                        <input type="text" id="eventoFormato" placeholder="Swiss + Top 8">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoQuota">Quota Iscrizione:</label>
+                        <input type="text" id="eventoQuota" placeholder="€15">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoPremi">Premi:</label>
+                        <input type="text" id="eventoPremi" placeholder="Carte promo esclusive, tappetini di gioco">
+                    </div>
+                    <div class="button-group">
+                        <button onclick="salvaEvento()" class="primary"><i class="fas fa-save"></i> Salva</button>
+                        <button onclick="hideEventoForm()" class="secondary"><i class="fas fa-times"></i> Annulla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-admin">
+        <div class="include-footer"></div>
+    </footer>
+
+    <script>
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoiVZiPqbwtKmDC5Pw0Nw4bpLqzynCA5c",
+            authDomain: "tekkenredshift.firebaseapp.com",
+            databaseURL: "https://tekkenredshift-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tekkenredshift",
+            storageBucket: "tekkenredshift.firebasestorage.app",
+            messagingSenderId: "88169810750",
+            appId: "1:88169810750:web:060972498a69c259ab7a6f",
+            measurementId: "G-FLNMLFD0JC"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let torneiData = {};
+        let torneoSelezionatoId = null;
+        let paginaCorrente = 1;
+        const torneiPerPagina = 6;
+
+        // Funzione per mostrare alert
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.textContent = message;
+            document.body.prepend(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+        // Carica il tema salvato
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.querySelector('#themeToggle i');
+            
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // Inizializza il backend
+            initializeBackend();
+
+            // Aggiungi event listener per il cambio tema
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                const html = document.documentElement;
+                const themeIcon = this.querySelector('i');
+                
+                if (html.getAttribute('data-theme') === 'dark') {
+                    html.setAttribute('data-theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Gestione tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Rimuovi classe active da tutti i tab
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Aggiungi classe active al tab cliccato
+                    this.classList.add('active');
+                    document.getElementById(`tab-${this.dataset.tab}`).classList.add('active');
+                });
+            });
+
+            // Gestione menu sidebar
+            document.getElementById('menuTornei').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('sezioneTornei').style.display = 'block';
+                document.getElementById('sezioneStatistiche').style.display = 'none';
+                document.getElementById('gestioneTorneo').style.display = 'none';
+                document.getElementById('sezioneEventi').style.display = 'none';
+            });
+
+            document.getElementById('menuStatistiche').addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Click sul menu Statistiche");
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('sezioneTornei').style.display = 'none';
+                document.getElementById('sezioneStatistiche').style.display = 'block';
+                document.getElementById('gestioneTorneo').style.display = 'none';
+                document.getElementById('sezioneEventi').style.display = 'none';
+                console.log("Sto per chiamare caricaStatistiche()");
+                if (typeof caricaStatistiche === 'function') {
+                    caricaStatistiche();
+                    console.log("caricaStatistiche() eseguita con successo");
+                } else {
+                    console.error("Errore: caricaStatistiche non è una funzione definita");
+                }
+            });
+
+            document.getElementById('menuEventi').addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Click sul menu Eventi");
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('sezioneTornei').style.display = 'none';
+                document.getElementById('sezioneStatistiche').style.display = 'none';
+                document.getElementById('gestioneTorneo').style.display = 'none';
+                document.getElementById('sezioneEventi').style.display = 'block';
+                console.log("Sto per chiamare caricaEventi()");
+                if (typeof caricaEventi === 'function') {
+                    caricaEventi(); // Carica gli eventi quando si apre la sezione
+                    console.log("caricaEventi() eseguita con successo");
+                } else {
+                    console.error("Errore: caricaEventi non è una funzione definita");
+                }
+            });
+
+            // Event listeners per filtri
+            document.getElementById('cercaTorneo').addEventListener('input', function() {
+                caricaTornei();
+            });
+
+            document.getElementById('ordinaTornei').addEventListener('change', function() {
+                caricaTornei();
+            });
+
+            document.getElementById('cercaGiocatore').addEventListener('input', function() {
+                if (torneoSelezionatoId) {
+                    caricaGiocatoriTorneo(torneoSelezionatoId);
+                }
+            });
+
+            document.getElementById('ordinaGiocatori').addEventListener('change', function() {
+                if (torneoSelezionatoId) {
+                    caricaGiocatoriTorneo(torneoSelezionatoId);
+                }
+            });
+
+            // Event listener per creazione torneo
+            document.getElementById('btnCreaTorneo').addEventListener('click', creaTorneo);
+
+            // Event listener per salvataggio impostazioni torneo
+            document.getElementById('btnSalvaImpostazioni').addEventListener('click', salvaImpostazioniTorneo);
+
+            // Event listener per eliminazione torneo
+            document.getElementById('btnEliminaTorneo').addEventListener('click', function() {
+                if (torneoSelezionatoId) {
+                    eliminaTorneo(torneoSelezionatoId);
+                }
+            });
+        });
+
+        // Inizializza il backend
+        function initializeBackend() {
+            console.log("Inizializzazione backend in corso...");
+            
+            // Verifica che le funzioni siano definite
+            console.log("Verifica funzioni: caricaTornei:", typeof caricaTornei === 'function');
+            console.log("Verifica funzioni: caricaStatistiche:", typeof caricaStatistiche === 'function');
+            console.log("Verifica funzioni: caricaEventi:", typeof caricaEventi === 'function');
+            
+            // Carica i dati
+            caricaTornei();
+            
+            if (typeof caricaStatistiche === 'function') {
+                caricaStatistiche();
+            } else {
+                console.error("Errore: caricaStatistiche non è una funzione definita");
+            }
+            
+            if (typeof caricaEventi === 'function') {
+                caricaEventi();
+            } else {
+                console.error("Errore: caricaEventi non è una funzione definita");
+            }
+        }
+
+        // Carica i tornei
+        function caricaTornei() {
+            const container = document.getElementById('torneiGrid');
+            const searchTerm = document.getElementById('cercaTorneo').value.toLowerCase();
+            const ordinamento = document.getElementById('ordinaTornei').value;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Caricamento tornei in corso...</div>';
+            
+            database.ref('tornei').once('value')
+                .then(snapshot => {
+                    torneiData = snapshot.val() || {};
+                    let tornei = Object.entries(torneiData);
+                    
+                    // Filtra i tornei
+                    if (searchTerm) {
+                        tornei = tornei.filter(([_, torneo]) => 
+                            torneo.nome.toLowerCase().includes(searchTerm));
+                    }
+                    
+                    // Ordina i tornei
+                    if (ordinamento === 'nome') {
+                        tornei.sort((a, b) => a[1].nome.localeCompare(b[1].nome));
+                    } else if (ordinamento === 'data') {
+                        tornei.sort((a, b) => new Date(b[1].creatoIl) - new Date(a[1].creatoIl));
+                    } else if (ordinamento === 'giocatori') {
+                        tornei.sort((a, b) => {
+                            const giocatoriA = a[1].giocatori ? Object.keys(a[1].giocatori).length : 0;
+                            const giocatoriB = b[1].giocatori ? Object.keys(b[1].giocatori).length : 0;
+                            return giocatoriB - giocatoriA;
+                        });
+                    }
+                    
+                    // Gestione paginazione
+                    const totalePagine = Math.ceil(tornei.length / torneiPerPagina);
+                    const inizio = (paginaCorrente - 1) * torneiPerPagina;
+                    const fine = inizio + torneiPerPagina;
+                    const torneiPagina = tornei.slice(inizio, fine);
+                    
+                    container.innerHTML = '';
+                    
+                    if (tornei.length === 0) {
+                        container.innerHTML = '<div class="no-data">Nessun torneo trovato</div>';
+                        document.getElementById('torneiPagination').innerHTML = '';
+                        return;
+                    }
+                    
+                    // Visualizza i tornei
+                    torneiPagina.forEach(([torneoId, torneo]) => {
+                        const giocatori = torneo.giocatori || {};
+                        const numGiocatori = Object.keys(giocatori).length;
+                        
+                        // Trova il vincitore
+                        let vincitore = { nome: 'Nessuno', punti: 0 };
+                        if (numGiocatori > 0) {
+                            const giocatoriArray = Object.values(giocatori)
+                                .sort((a, b) => (b.punti || 0) - (a.punti || 0));
+                            vincitore = giocatoriArray[0];
+                        }
+                        
+                        const card = document.createElement('div');
+                        card.className = 'torneo-item-card';
+                        card.innerHTML = `
+                            <div class="torneo-item-header">
+                                <h3>${torneo.nome}</h3>
+                            </div>
+                            <div class="torneo-item-body">
+                                <p><i class="fas fa-calendar"></i> ${new Date(torneo.creatoIl).toLocaleDateString()}</p>
+                                <p><i class="fas fa-users"></i> ${numGiocatori} giocatori</p>
+                                ${torneo.tipo ? `<p><i class="fas fa-tag"></i> ${torneo.tipo}</p>` : ''}
+                                ${torneo.dataInizio ? `<p><i class="fas fa-calendar-day"></i> ${torneo.dataInizio}</p>` : ''}
+                                ${torneo.linkChallonge ? `<p><i class="fas fa-trophy"></i> <a href="${torneo.linkChallonge}" target="_blank" class="challonge-link">Bracket Challonge</a></p>` : ''}
+                                <p><i class="fas fa-trophy"></i> Vincitore: ${vincitore.nome} (${vincitore.punti || 0} punti)</p>
+                            </div>
+                            <div class="torneo-item-footer">
+                                <button onclick="gestisciTorneo('${torneoId}')"><i class="fas fa-edit"></i> Gestisci</button>
+                                <button onclick="eliminaTorneo('${torneoId}')" style="background: #dc3545"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                    
+                    // Aggiorna paginazione
+                    aggiornaPaginazione(totalePagine);
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento dei tornei:", error);
+                    container.innerHTML = `<div class="error">Errore nel caricamento dei tornei: ${error.message}</div>`;
+                });
+        }
+
+        // Aggiorna la paginazione
+        function aggiornaPaginazione(totalePagine) {
+            const paginationContainer = document.getElementById('torneiPagination');
+            paginationContainer.innerHTML = '';
+            
+            if (totalePagine <= 1) return;
+            
+            // Pulsante precedente
+            if (paginaCorrente > 1) {
+                const prevBtn = document.createElement('div');
+                prevBtn.className = 'pagination-item';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.addEventListener('click', () => {
+                    paginaCorrente--;
+                    caricaTornei();
+                });
+                paginationContainer.appendChild(prevBtn);
+            }
+            
+            // Pagine
+            for (let i = 1; i <= totalePagine; i++) {
+                const pageBtn = document.createElement('div');
+                pageBtn.className = `pagination-item ${i === paginaCorrente ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    paginaCorrente = i;
+                    caricaTornei();
+                });
+                paginationContainer.appendChild(pageBtn);
+            }
+            
+            // Pulsante successivo
+            if (paginaCorrente < totalePagine) {
+                const nextBtn = document.createElement('div');
+                nextBtn.className = 'pagination-item';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.addEventListener('click', () => {
+                    paginaCorrente++;
+                    caricaTornei();
+                });
+                paginationContainer.appendChild(nextBtn);
+            }
+        }
+
+        // Crea un nuovo torneo
+        function creaTorneo() {
+            const nome = document.getElementById('nuovoTorneo').value.trim();
+            const tipo = document.getElementById('tipoTorneo').value.trim();
+            const data = document.getElementById('dataTorneo').value;
+            const linkChallonge = document.getElementById('linkChallonge').value.trim();
+            
+            if (!nome) {
+                showAlert('Inserisci un nome per il torneo!', 'error');
+                return;
+            }
+            
+            const nuovoTorneo = {
+                nome: nome,
+                giocatori: {},
+                creatoIl: new Date().toISOString()
+            };
+            
+            if (tipo) nuovoTorneo.tipo = tipo;
+            if (data) nuovoTorneo.dataInizio = data;
+            if (linkChallonge) nuovoTorneo.linkChallonge = linkChallonge;
+            
+            database.ref('tornei').push(nuovoTorneo)
+                .then(() => {
+                    document.getElementById('nuovoTorneo').value = '';
+                    document.getElementById('tipoTorneo').value = '';
+                    document.getElementById('dataTorneo').value = '';
+                    document.getElementById('linkChallonge').value = '';
+                    showAlert(`Torneo "${nome}" creato con successo!`);
+                    caricaTornei();
+                })
+                .catch(error => {
+                    console.error("Errore nella creazione del torneo:", error);
+                    showAlert(`Errore nella creazione del torneo: ${error.message}`, 'error');
+                });
+        }
+
+        // Gestisci un torneo specifico
+        function gestisciTorneo(torneoId) {
+            torneoSelezionatoId = torneoId;
+            const torneo = torneiData[torneoId];
+            
+            if (!torneo) {
+                showAlert('Torneo non trovato!', 'error');
+                return;
+            }
+            
+            // Aggiorna l'interfaccia
+            document.getElementById('nomeTorneoSelezionato').textContent = torneo.nome;
+            document.getElementById('sezioneTornei').style.display = 'none';
+            document.getElementById('sezioneStatistiche').style.display = 'none';
+            document.getElementById('sezioneEventi').style.display = 'none';
+            document.getElementById('gestioneTorneo').style.display = 'block';
+            
+            // Imposta i valori nei campi di modifica
+            document.getElementById('editNomeTorneo').value = torneo.nome;
+            document.getElementById('editTipoTorneo').value = torneo.tipo || '';
+            document.getElementById('editDataTorneo').value = torneo.dataInizio || '';
+            document.getElementById('editLinkChallonge').value = torneo.linkChallonge || '';
+            
+            // Attiva il tab giocatori
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('.tab[data-tab="giocatori"]').classList.add('active');
+            document.getElementById('tab-giocatori').classList.add('active');
+            
+            // Carica i giocatori
+            caricaGiocatoriTorneo(torneoId);
+        }
+
+        // Carica i giocatori di un torneo
+        function caricaGiocatoriTorneo(torneoId) {
+            const container = document.getElementById('giocatoriGrid');
+            const searchTerm = document.getElementById('cercaGiocatore').value.toLowerCase();
+            const ordinamento = document.getElementById('ordinaGiocatori').value;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Caricamento giocatori...</div>';
+            
+            database.ref(`tornei/${torneoId}`).once('value')
+                .then(snapshot => {
+                    const torneo = snapshot.val() || {};
+                    const giocatori = torneo.giocatori || {};
+                    let giocatoriArray = Object.entries(giocatori);
+                    
+                    // Filtra i giocatori
+                    if (searchTerm) {
+                        giocatoriArray = giocatoriArray.filter(([_, giocatore]) => 
+                            giocatore.nome.toLowerCase().includes(searchTerm));
+                    }
+                    
+                    // Ordina i giocatori
+                    if (ordinamento === 'nome') {
+                        giocatoriArray.sort((a, b) => a[1].nome.localeCompare(b[1].nome));
+                    } else if (ordinamento === 'punti') {
+                        giocatoriArray.sort((a, b) => (b[1].punti || 0) - (a[1].punti || 0));
+                    } else if (ordinamento === 'posizione') {
+                        giocatoriArray.sort((a, b) => (a[1].posizione || 999) - (b[1].posizione || 999));
+                    }
+                    
+                    container.innerHTML = '';
+                    
+                    if (giocatoriArray.length === 0) {
+                        container.innerHTML = '<div class="no-data">Nessun giocatore trovato</div>';
+                        return;
+                    }
+                    
+                    // Visualizza i giocatori
+                    giocatoriArray.forEach(([giocatoreId, giocatore]) => {
+                        const card = document.createElement('div');
+                        card.className = 'giocatore-card';
+                        card.innerHTML = `
+                            <div class="giocatore-nome">${giocatore.nome}</div>
+                            <div class="giocatore-stats">
+                                <div class="giocatore-stat">
+                                    <div class="giocatore-stat-value">${giocatore.punti || 0}</div>
+                                    <div class="giocatore-stat-label">Punti</div>
+                                </div>
+                                <div class="giocatore-stat">
+                                    <div class="giocatore-stat-value">${giocatore.posizione || '-'}</div>
+                                    <div class="giocatore-stat-label">Posizione</div>
+                                </div>
+                                <div class="giocatore-stat">
+                                    <div class="giocatore-stat-value">
+                                        <input type="checkbox" id="qualificato-${giocatoreId}" 
+                                            ${giocatore.qualificato ? 'checked' : ''}>
+                                    </div>
+                                    <div class="giocatore-stat-label">OP</div>
+                                </div>
+                            </div>
+                            <div class="flex-group" style="margin-top: 10px;">
+                                <input type="number" id="punti-${giocatoreId}" value="${giocatore.punti || 0}" class="small-input" placeholder="Punti">
+                                <input type="number" id="posizione-${giocatoreId}" value="${giocatore.posizione || 0}" class="small-input" placeholder="Pos">
+                                <button onclick="salvaModificheGiocatore('${giocatoreId}')" class="small-button"><i class="fas fa-save"></i></button>
+                                <button onclick="rimuoviGiocatore('${giocatoreId}')" class="small-button" style="background: #dc3545"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento dei giocatori:", error);
+                    container.innerHTML = `<div class="error">Errore nel caricamento dei giocatori: ${error.message}</div>`;
+                });
+        }
+
+        function chiudiGestione() {
+            document.getElementById('gestioneTorneo').style.display = 'none';
+            document.getElementById('sezioneTornei').style.display = 'block';
+            document.getElementById('sezioneStatistiche').style.display = 'none';
+            document.getElementById('sezioneEventi').style.display = 'none';
+            // Aggiorna il menu
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            document.getElementById('menuTornei').classList.add('active');
+            torneoSelezionatoId = null;
+        }
+        
+        // Definizione di fallback di caricaStatistiche se non disponibile nello script esterno
+        if (typeof caricaStatistiche !== 'function') {
+            function caricaStatistiche() {
+                console.log("Utilizzo la funzione caricaStatistiche di fallback");
+                const container = document.getElementById('topGiocatoriBody');
+                if (container) {
+                    container.innerHTML = '<tr><td colspan="5">Funzionalità di statistiche in manutenzione.</td></tr>';
+                }
+                document.getElementById('statTorneiTotali').textContent = Object.keys(torneiData).length;
+                document.getElementById('statGiocatoriTotali').textContent = "N/D";
+                document.getElementById('statPuntiTotali').textContent = "N/D";
+                document.getElementById('statUltimoTorneo').textContent = "N/D";
+            }
+        }
+        
+        // Definizione di fallback di caricaEventi se non disponibile nello script esterno
+        if (typeof caricaEventi !== 'function') {
+            function caricaEventi() {
+                console.log("Utilizzo la funzione caricaEventi di fallback");
+                const container = document.getElementById('eventiContainer');
+                if (container) {
+                    container.innerHTML = '<div class="info">Funzionalità eventi in manutenzione.</div>';
+                }
+            }
+        }
+    </script>
+    
+    <!-- Script per funzionalità avanzate -->
+    <script src="script-backend-improved.js"></script>
+</body>
+</html>

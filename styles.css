@@ -1,0 +1,802 @@
+/* Lega dello Stretto - Stili Moderni
+ * Sistema di tema chiaro/scuro con design responsive
+ */
+
+:root {
+    /* Variabili tema chiaro (default) */
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --bg-accent: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    
+    /* Colori brand */
+    --brand-primary: #d9230f; /* Rosso One Piece */
+    --brand-secondary: #ffc107; /* Giallo/Oro */
+    --brand-accent: #0d6efd; /* Blu */
+    
+    /* Colori per le tabelle */
+    --table-header: #d9230f;
+    --table-header-text: #ffffff;
+    --table-row-odd: #f8f9fa;
+    --table-row-even: #ffffff;
+    --table-border: #dee2e6;
+    
+    /* Colori per le posizioni */
+    --position-1: #ffd700; /* Oro */
+    --position-2: #c0c0c0; /* Argento */
+    --position-3: #cd7f32; /* Bronzo */
+    
+    /* Colori per le categorie */
+    --category-1: #0d6efd; /* Punti totali */
+    --category-2: #198754; /* Premi */
+    --category-3: #fd7e14; /* Qualificati */
+    --category-4: #6f42c1; /* Storico */
+    
+    /* Dimensioni */
+    --border-radius: 8px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --container-max-width: 1200px;
+    
+    /* Transizioni */
+    --transition-speed: 0.3s;
+}
+
+/* Tema scuro */
+[data-theme="dark"] {
+    --bg-primary: #212529;
+    --bg-secondary: #343a40;
+    --bg-accent: #495057;
+    --text-primary: #f8f9fa;
+    --text-secondary: #e9ecef;
+    --text-muted: #adb5bd;
+    --border-color: #495057;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    
+    /* Tabelle in tema scuro */
+    --table-row-odd: #343a40;
+    --table-row-even: #3e444a;
+    --table-border: #495057;
+}
+
+/* Reset e stili base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    padding: var(--spacing-md);
+    margin: 0;
+}
+
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
+}
+
+/* Header e navigazione */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--brand-primary);
+}
+
+.logo img {
+    height: 40px;
+}
+
+/* Menu di navigazione principale */
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-md);
+}
+
+.main-nav a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.main-nav a:hover, .main-nav a.active {
+    background-color: var(--brand-primary);
+    color: white;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: var(--spacing-sm);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed);
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-accent);
+}
+
+/* Sezioni e card */
+.section {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing-lg);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    color: var(--brand-primary);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.3rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Tabelle */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--table-border);
+}
+
+th {
+    background-color: var(--table-header);
+    color: var(--table-header-text);
+    font-weight: 600;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--table-row-odd);
+}
+
+tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+/* Personalizzazione tabelle per categoria */
+.punti-totali th {
+    background-color: var(--category-1);
+}
+
+.premi-table th {
+    background-color: var(--category-2);
+}
+
+.qualificati-table th {
+    background-color: var(--category-3);
+}
+
+.storico-table th {
+    background-color: var(--bg-accent);
+}
+
+/* Stili per le pagine regolamento e contatti */
+.regolamento-container,
+.contatti-container {
+    display: block;
+    max-width: var(--container-max-width);
+}
+
+.regolamento-section,
+.contatti-section {
+    width: 100%;
+}
+
+.regolamento-content h1 {
+    color: var(--brand-primary);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.regolamento-content h3 {
+    color: var(--brand-primary);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.3rem;
+}
+
+.regolamento-content h4 {
+    color: var(--text-primary);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1rem;
+}
+
+.regolamento-content p {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.regolamento-content ul {
+    margin-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.contatto-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow);
+}
+
+.contatto-card h3 {
+    color: var(--brand-primary);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.3rem;
+}
+
+.contatto-card p {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.contatto-card a {
+    color: var(--brand-accent);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.contatto-card a:hover {
+    color: var(--brand-primary);
+    text-decoration: underline;
+}
+
+.contatto-info {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background-color: var(--bg-accent);
+    border-radius: var(--border-radius);
+}
+
+/* Posizioni e badge */
+.position-1 {
+    color: var(--position-1);
+    font-weight: bold;
+}
+
+.position-2 {
+    color: var(--position-2);
+    font-weight: bold;
+}
+
+.position-3 {
+    color: var(--position-3);
+    font-weight: bold;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-right: 4px;
+    background-color: var(--bg-accent);
+    color: var(--text-primary);
+}
+
+.badge.position-1 {
+    background-color: var(--position-1);
+    color: #212529;
+}
+
+.badge.position-2 {
+    background-color: var(--position-2);
+    color: #212529;
+}
+
+.badge.position-3 {
+    background-color: var(--position-3);
+    color: #212529;
+}
+
+.badge-op {
+    background-color: var(--brand-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin-left: 5px;
+}
+
+/* Form elements */
+select, input, button {
+    padding: 10px 12px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+select:focus, input:focus {
+    outline: none;
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+button {
+    background-color: var(--brand-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color var(--transition-speed);
+}
+
+button:hover {
+    background-color: #b81c0c;
+}
+
+button.secondary {
+    background-color: var(--bg-accent);
+    color: var(--text-primary);
+}
+
+button.secondary:hover {
+    background-color: var(--border-color);
+}
+
+/* Elementi specifici per il backend */
+.torneo-list {
+    margin-top: var(--spacing-md);
+}
+
+.torneo-item, .giocatore-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    transition: background-color var(--transition-speed);
+}
+
+.torneo-item:hover, .giocatore-item:hover {
+    background-color: var(--bg-accent);
+}
+
+.flex-group {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    align-items: center;
+}
+
+.gestione-torneo {
+    display: none;
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.visible {
+    display: block;
+}
+
+/* Alert e notifiche */
+.alert {
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+}
+
+.success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* Loading state */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.loading i {
+    margin-right: var(--spacing-sm);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal per profilo utente */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: var(--spacing-lg);
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stat-card {
+    background-color: var(--bg-accent);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--brand-primary);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .flex-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-md);
+    }
+    
+    th, td {
+        padding: var(--spacing-sm);
+    }
+    
+    .section {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Animazioni */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing-md); }
+.mt-3 { margin-top: var(--spacing-lg); }
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+.player-name { cursor: pointer; color: var(--brand-accent); }
+.player-name:hover { text-decoration: underline; }
+
+/* Stile per la tabella degli eventi */
+.eventi-table th {
+    background-color: var(--brand-accent);
+    color: white;
+}
+
+.eventi-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.eventi-icon {
+    margin-right: 5px;
+    color: var(--brand-primary);
+}
+
+.evento-prossimo {
+    font-weight: bold;
+    position: relative;
+}
+
+.evento-prossimo::after {
+    content: "Prossimo";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--brand-primary);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.iscrizione-aperta {
+    color: green;
+    font-weight: bold;
+}
+
+.iscrizione-chiusa {
+    color: red;
+}
+
+.badge-countdown {
+    display: inline-block;
+    background-color: var(--brand-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+/* Stile per le card degli eventi nel backend */
+.evento-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--spacing-md);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.evento-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.evento-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background-color: var(--bg-accent);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.evento-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.evento-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.evento-details {
+    padding: var(--spacing-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.evento-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.evento-info i {
+    color: var(--brand-primary);
+    width: 18px;
+}
+
+.evento-passato {
+    opacity: 0.7;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger {
+    color: var(--error);
+}
+
+.btn-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.form-container {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+.button-group {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+/* Stile per il link Challonge */
+.challonge-link {
+    color: var(--brand-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+}
+
+.challonge-link:hover {
+    text-decoration: underline;
+    color: #b81c0c;
+}
+
+.challonge-link::after {
+    content: "\f35d";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.8em;
+}
+
+/* Stili per il container dei link del torneo */
+.torneo-links {
+    margin: 10px 0;
+}
+
+.torneo-links .challonge-link {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-accent);
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s;
+}
+
+.torneo-links .challonge-link:hover {
+    background-color: var(--border-color);
+}
+
+.torneo-links .challonge-link i {
+    margin-right: 5px;
+    color: var(--brand-primary);
+}

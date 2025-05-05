@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contatta la Lega Di Tekken 8 - La lega ufficiale di Messina">
+    <title>Contatti - Lega dello Stretto</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS personalizzato -->
+    <link rel="stylesheet" href="tekken8-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+        <div class="logo-container">
+                <img src="tekken8-logo.png" alt="Logo Tekken 8" class="logo-img">
+                <span class="site-title">Lega Tekken 8 Messina</span>
+        </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="tornei.html" class="nav-link">Tornei</a></li>
+                    <li class="nav-item"><a href="classifica.html" class="nav-link">Classifiche</a></li>
+                    <li class="nav-item"><a href="eventi.html" class="nav-link">Eventi</a></li>
+                    <li class="nav-item"><a href="regolamento.html" class="nav-link">Regolamento</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link active">Contatti</a></li>
+            </ul>
+        </nav>
+            <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        </div>
+    </header>
+    
+    <!-- Hero Section per Contatti -->
+    <section class="hero contatti-hero" style="background: none; position: relative; overflow: hidden; height: 400px;">
+        <div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)); z-index: 1;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 0;">
+            <img src="contatti.png" alt="Contatti Banner" style="width: 100%; height: 100%; object-fit: cover; opacity: 1;">
+        </div>
+        <div class="hero-content fade-in" style="position: relative; z-index: 2; text-align: center; max-width: 900px;">
+            <h2 class="hero-title" style="font-size: 4rem; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 3px; margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; color: #f9f6e5;">Contatti</h2>
+            <p class="hero-subtitle" style="font-size: 1.3rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); color: #f9f6e5;">Hai domande? Contatta il team della Lega dello Stretto</p>
+        </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <section class="contact-page">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info-box">
+                    <h2 class="section-title">Informazioni di Contatto</h2>
+                    <p class="contact-description">
+                        Siamo sempre felici di rispondere alle tue domande, ricevere feedback o aiutarti a partecipare ai nostri eventi.
+                    </p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Email</h3>
+                                <p><a href="mailto:redshiftg@gmail.com">redshiftg@gmail.com</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Telefono</h3>
+                                <p><a href="tel:+393287241502">+39 380 592 9354</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Indirizzo</h3>
+                                <p>Via Nicola Fabrizi 11, Messina</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Orari</h3>
+                                <p>Mar-Dom: 17:00-01:00<br>Lun: Chiuso</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <h3>Seguici sui Social</h3>
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/RedShiftGaming" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/redshift_gaming/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-box">
+                    <h2 class="section-title">Inviaci un Messaggio</h2>
+                    <form id="contactForm" class="contact-form" action="https://formspree.io/f/mzzrdrwe" method="POST">
+                        <!-- Campi di configurazione Formspree -->
+                        <input type="hidden" name="_subject" value="Nuovo messaggio dal sito Lega dello Stretto">
+                        <input type="hidden" name="_next" value="contatti.html?success=true">
+                        
+                        <div class="form-group">
+                            <label for="name">Nome e Cognome*</label>
+                            <input type="text" id="name" name="nome" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email*</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Telefono</label>
+                            <input type="tel" id="phone" name="telefono">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Oggetto*</label>
+                            <input type="text" id="subject" name="oggetto" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Messaggio*</label>
+                            <textarea id="message" name="messaggio" rows="5" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="privacy_accepted" required>
+                                <span class="checkmark"></span>
+                                Ho letto e accetto la <a href="#">Privacy Policy</a>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Invia Messaggio</button>
+                    </form>
+                    
+                    <!-- Messaggio di conferma nascosto inizialmente -->
+                    <div id="confirmationMessage" style="display: none; margin-top: 2rem; padding: 1.5rem; background-color: var(--primary-color); color: white; border-radius: 8px; text-align: center;">
+                        <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h3 style="margin-bottom: 0.5rem;">Messaggio Inviato!</h3>
+                        <p>Grazie per averci contattato. Ti risponderemo il prima possibile.</p>
+                    </div>
+                    
+                    <!-- Messaggio di errore nascosto inizialmente -->
+                    <div id="errorMessage" style="display: none; margin-top: 2rem; padding: 1.5rem; background-color: #dc3545; color: white; border-radius: 8px; text-align: center;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h3 style="margin-bottom: 0.5rem;">Errore di invio</h3>
+                        <p>Si è verificato un errore durante l'invio del messaggio. Per favore riprova più tardi o contattaci direttamente via email o telefono.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">Dove Trovarci</h2>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3146.6731087858893!2d15.553939415311156!3d38.19306979584946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13145093972f95e1%3A0x15a9f74cc6aecf69!2sVia%20Nicola%20Fabrizi%2C%2011%2C%2098122%20Messina%20ME!5e0!3m2!1sit!2sit!4v1697234568123!5m2!1sit!2sit" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Domande Frequenti</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Come posso partecipare ai tornei?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Per partecipare ai nostri tornei, puoi iscriverti direttamente presso la nostra sede oppure contattarci via email o telefono. Consulta la sezione eventi per trovare i dettagli specifici di ogni torneo.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Quale formato di gioco utilizzate?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>La maggior parte dei nostri tornei utilizza il formato Swiss seguito da Top 8/4 per le fasi finali. Ogni evento specifico può avere regole differenti, quindi controlla sempre il regolamento del singolo torneo.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Come funziona il sistema di qualificazione?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>I giocatori accumulano punti partecipando ai tornei della Lega. I punti variano in base al piazzamento e all'importanza dell'evento. Al termine della stagione, i giocatori con più punti si qualificano per il Championship finale.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Posso portare accompagnatori ai tornei?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sì, i nostri eventi sono aperti al pubblico. Gli accompagnatori sono benvenuti, ma ricorda che lo spazio potrebbe essere limitato in alcuni locali. Per i tornei più importanti, verifica sempre le disposizioni specifiche.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Come posso diventare sponsor della Lega?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Se sei interessato a sponsorizzare i nostri eventi o collaborare con la Lega dello Stretto, contattaci via email all'indirizzo sponsor@legadellostretto.it. Saremo felici di discutere le diverse opportunità di partnership.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="include-footer"></div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script>
+        // Toggle Menu Mobile
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+        
+        // Dark/Light Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            themeIcon.classList.toggle('fa-moon');
+            themeIcon.classList.toggle('fa-sun');
+            
+            // Salva preferenza tema
+            const isDarkTheme = document.body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDarkTheme);
+        });
+        
+        // Ripristina il tema salvato all'avvio
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ripristina il tema salvato
+            if (localStorage.getItem('darkTheme') === 'true') {
+                document.body.classList.add('dark-theme');
+                document.querySelector('#themeToggle i').classList.remove('fa-moon');
+                document.querySelector('#themeToggle i').classList.add('fa-sun');
+            }
+        });
+        
+        // FAQ Toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other FAQs
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current FAQ
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Validazione form prima dell'invio
+        const contactForm = document.getElementById('contactForm');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Gestione form con Formspree
+        contactForm.addEventListener('submit', function(e) {
+            // La validazione viene gestita dai campi required
+            // Formspree si occuperà dell'invio
+            
+            // Disabilita il pulsante per evitare invii multipli
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio in corso...';
+            
+            // Formspree gestirà il resto (non serve preventDefault)
+            // Il browser si occuperà di inviare il form a Formspree
+        });
+        
+        // Controllo se c'è un messaggio di successo nell'URL (reindirizzamento da Formspree)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Se c'è "success=true" nell'URL, mostra il messaggio di conferma
+            if (window.location.search.includes('success=true')) {
+                contactForm.style.display = 'none';
+                errorMessage.style.display = 'none';
+                confirmationMessage.style.display = 'block';
+                confirmationMessage.scrollIntoView({behavior: 'smooth'});
+            }
+            // Se c'è "error=true" nell'URL, mostra il messaggio di errore
+            else if (window.location.search.includes('error=true')) {
+                errorMessage.style.display = 'block';
+                confirmationMessage.style.display = 'none';
+                errorMessage.scrollIntoView({behavior: 'smooth'});
+            }
+        });
+    </script>
+</body>
+</html>

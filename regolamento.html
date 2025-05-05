@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Regolamento ufficiale della Lega Tekken 8 Messina">
+    <title>Regolamento - Lega Tekken 8 Messina</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS personalizzato -->
+    <link rel="stylesheet" href="tekken8-styles.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="tekken8-logo.png" alt="Logo Tekken 8" class="logo-img">
+                <span class="site-title">Lega Tekken 8 Messina</span>
+            </div>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="tornei.html" class="nav-link">Tornei</a></li>
+                    <li class="nav-item"><a href="classifica.html" class="nav-link">Classifiche</a></li>
+                    <li class="nav-item"><a href="eventi.html" class="nav-link">Eventi</a></li>
+                    <li class="nav-item"><a href="regolamento.html" class="nav-link active">Regolamento</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+                </ul>
+            </nav>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section per Regolamento -->
+    <section class="hero eventi-hero" style="background: none; position: relative; overflow: hidden; height: 400px;">
+        <div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)); z-index: 1;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 0;">
+            <img src="regolamento.png" alt="Regolamento Banner" style="width: 100%; height: 100%; object-fit: cover; opacity: 1;">
+        </div>
+        <div class="hero-content fade-in" style="position: relative; z-index: 2; text-align: center; max-width: 900px;">
+            <h1 class="hero-title" style="font-size: 4rem; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 3px; margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; color: #f9f6e5;">Regolamento</h1>
+            <p class="hero-subtitle" style="font-size: 1.3rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); color: #f9f6e5;">Tutto ciò che devi sapere per partecipare ai tornei della Lega Tekken 8 Messina</p>
+        </div>
+    </section>
+
+    <!-- Contenuto principale -->
+    <main class="container">
+        <!-- Struttura Tornei -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-trophy"></i> Struttura dei Tornei</h2>
+            
+            <div class="regolamento-content">
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>12 Tornei Mensili</h3>
+                        <p>La Lega Tekken 8 Messina organizza un torneo ogni mese, per un totale di 12 eventi annuali. La quota di partecipazione standard è di 6€ per ogni torneo.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Winner Tournament</h3>
+                        <p>Alla fine dell’anno, i primi 8 nella classifica a punti si qualificano per il torneo finale gratuito chiamato “Winner Tournament”.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Formato di Gioco</h3>
+                        <p>I nostri tornei seguono il regolamento competitivo di Tekken 8. Si svolgono in modalità Double Elimination. Gli incontri si disputano al meglio dei 3 round, con match FT2 nelle fasi iniziali e FT3 nelle fasi finali.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Sistema Punti -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-star"></i> Sistema Punti</h2>
+            
+            <div class="regolamento-content">
+                <p class="intro-text">Ogni partecipante ai tornei accumula punti che possono essere utilizzati per riscattare premi esclusivi. Ecco come funziona il sistema:</p>
+                
+                <div class="points-system">
+                    <h3>Punti Base</h3>
+                    <p>Ogni partecipante riceve dei punti ad ogni partecipazione ai tornei mensili.</p>
+                    
+                    <h3>Bonus Top 8</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Posizione</th>
+                                    <th>Punti Bonus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1° Classificato</td>
+                                    <td>80 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>2° Classificato</td>
+                                    <td>65 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>3° Classificato</td>
+                                    <td>55 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>4° Classificato</td>
+                                    <td>50 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>5° Classificato</td>
+                                    <td>45 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>6° Classificato</td>
+                                    <td>40 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>7° Classificato</td>
+                                    <td>35 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>8° Classificato</td>
+                                    <td>35 punti</td>
+                                </tr>
+                                <tr>
+                                    <td>9° Classificato in poi</td>
+                                    <td>30 punti</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Premi -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-gift"></i> Premi Riscattabili</h2>
+            
+            <div class="regolamento-content">
+                <p class="intro-text">I punti accumulati possono essere utilizzati per riscattare i seguenti premi:</p>
+                
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Soglia Punti</th>
+                                <th>Premio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>720 punti</td>
+                                <td>Tesseramento RedShift</td>
+                            </tr>
+                            <tr>
+                                <td>650 punti</td>
+                                <td>Abbonamento Mensile per PC/Console</td>
+                            </tr>
+                            <tr>
+                                <td>600 punti</td>
+                                <td>Abbonamento Settimanale per PC/Console</td>
+                            </tr>
+                            <tr>
+                                <td>540 punti</td>
+                                <td>Menù Panino, bibita, e snack</td>
+                            </tr>
+                            <tr>
+                                <td>450 punti</td>
+                                <td>2x Bibita a scelta</td>
+                            </tr>
+                            <tr>
+                                <td>400 punti</td>
+                                <td>1x Bibita a scelta</td>
+                            </tr>
+                            <tr>
+                                <td>350 punti</td>
+                                <td>3h Sala Pc</td>
+                            </tr>
+                            <tr>
+                                <td>250 punti</td>
+                                <td>2h Sala Pc</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="regole-note">
+                    <h3>Regole per i Premi</h3>
+                    <ul>
+                        <li>Ogni premio può essere riscattato una sola volta (es. se qualcuno prende il Tesseramento, nessun altro potrà farlo).</li>
+                        <li>Dopo il riscatto, i punti utilizzati verranno dedotti dal totale del giocatore (validi solo per i premi e non per la classifica a punti). </li>
+                        <li>Ogni premio da 800 pt a 540 pt può essere riscattato una sola volta per persona. I premi da 450 pt a 250 pt possono essere riscattati fino a tre volte una volta massimo per persona. I giocatori nella Top 4 della classifica nel momento del riscatto punti non possono riscattare premi a punti. </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Premi Speciali -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-award"></i> Premi Speciali</h2>
+            
+            <div class="regolamento-content">
+                <div class="special-prizes">
+                    <div class="prize-card">
+                        <div class="prize-icon">
+                                                                       
+                    <div class="prize-card">
+                        <div class="prize-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="prize-content">
+                            <h3>Premio Tekken Lord</h3>
+                            <p>Chi ha partecipato a più tornei durante l'anno (in caso di parità si procederà con un'estrazione casuale) riceverà un gadget a tema Tekken 8.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="prize-card">
+                        <div class="prize-icon">
+                            <i class="fas fa-smile-wink"></i>
+                        </div>
+                        <div class="prize-content">
+                            <h3>Premio Kuma</h3>
+                            <p>Chi arriva più volte ultimo durante i 12 tornei annuali verrà premiato con una maglietta personalizzata "Keep Fighting"!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Regole Generali -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-gavel"></i> Regole Generali</h2>
+            
+            <div class="regolamento-content">
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Regolamento Ufficiale</h3>
+                        <p>Tutti i tornei seguono il regolamento competitivo di Tekken 8. I giocatori sono tenuti a conoscere le regole base del gioco e rispettare le decisioni degli arbitri.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Condotta</h3>
+                        <p>Ci aspettiamo che tutti i partecipanti mantengano un comportamento rispettoso e sportivo. Qualsiasi forma di comportamento antisportivo o scorretto sarà sanzionata.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Puntualità</h3>
+                        <p>È fondamentale rispettare gli orari di inizio torneo e di ogni match. I ritardatari potrebbero ricevere penalità o essere esclusi dal torneo.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Iscrizione</h3>
+                        <p>L'iscrizione ai tornei può essere effettuata online tramite il nostro sito o direttamente presso la sede dell'evento. Ti consigliamo di iscriverti in anticipo per garantirti un posto.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Domande Frequenti -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> Domande Frequenti</h2>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Come posso partecipare ai tornei?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Per partecipare ai nostri tornei, puoi iscriverti direttamente presso la nostra sede oppure contattarci via email o telefono. Consulta la sezione eventi per trovare i dettagli specifici di ogni torneo.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Quale formato di gioco utilizzate?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>La maggior parte dei nostri tornei utilizza il formato Double Elimination. Ogni match si gioca al meglio dei 3 round, con set FT2 o FT3 in base alla fase del torneo.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Come funziona il sistema di qualificazione?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>I giocatori accumulano punti partecipando ai tornei della Lega. I punti variano in base al piazzamento e all'importanza dell'evento. Al termine della stagione, i giocatori con più punti si qualificano per il Championship finale.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Cosa succede se non posso partecipare a tutti i tornei?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Non è obbligatorio partecipare a tutti i tornei. Puoi accumulare punti partecipando a quelli che preferisci. Ovviamente, più tornei frequenti, più punti potrai accumulare e maggiori saranno le possibilità di vincere premi.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Posso portare il mio controller personale?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sì, puoi portare il tuo controller personale compatibile con PS5. Assicurati che sia funzionante e senza modifiche che possano dare vantaggi sleali. In caso di problemi tecnici, abbiamo controller ufficiali a disposizione.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="include-footer"></div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script>
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoiVZiPqbwtKmDC5Pw0Nw4bpLqzynCA5c",
+            authDomain: "tekkenredshift.firebaseapp.com",
+            databaseURL: "https://tekkenredshift-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tekkenredshift",
+            storageBucket: "tekkenredshift.firebasestorage.app",
+            messagingSenderId: "88169810750",
+            appId: "1:88169810750:web:060972498a69c259ab7a6f",
+            measurementId: "G-FLNMLFD0JC"
+        };
+        
+        // Inizializzazione Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Funzione per toggle tema
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (document.body.classList.contains('dark-theme')) {
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkTheme', 'true');
+            } else {
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkTheme', 'false');
+            }
+        }
+
+        // Inizializzazione tema
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('darkTheme');
+            if (savedTheme === 'true') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            // Mobile menu
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('active');
+            });
+
+            // Gestione FAQ
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Chiudi tutti gli altri elementi FAQ
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Attiva/disattiva l'elemento corrente
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

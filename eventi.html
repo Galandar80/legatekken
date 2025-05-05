@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eventi e Tornei - Lega Tekken 8 Messina">
+    <title>Eventi e Tornei - Lega Tekken 8 Messina</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS personalizzato -->
+    <link rel="stylesheet" href="tekken8-styles.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="tekken8-logo.png" alt="Logo Tekken 8" class="logo-img">
+                <span class="site-title">Lega Tekken 8 Messina</span>
+        </div>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="tornei.html" class="nav-link">Tornei</a></li>
+                    <li class="nav-item"><a href="classifica.html" class="nav-link">Classifiche</a></li>
+                    <li class="nav-item"><a href="eventi.html" class="nav-link active">Eventi</a></li>
+                    <li class="nav-item"><a href="regolamento.html" class="nav-link">Regolamento</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+            </ul>
+        </nav>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Hero Section per Eventi -->
+    <section class="hero eventi-hero" style="background: none; position: relative; overflow: hidden; height: 400px;">
+        <div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)); z-index: 1;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 0;">
+            <img src="eventi.png" alt="Eventi e Tornei Banner" style="width: 100%; height: 100%; object-fit: cover; opacity: 1;">
+        </div>
+        <div class="hero-content fade-in" style="position: relative; z-index: 2; text-align: center; max-width: 900px;">
+            <h2 class="hero-title" style="font-size: 4rem; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 3px; margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; color: #f9f6e5;">Eventi e Tornei</h2>
+            <p class="hero-subtitle" style="font-size: 1.3rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); color: #f9f6e5;">Calendario completo degli eventi della Lega Tekken 8 Messina</p>
+        </div>
+        </section>
+        
+    <!-- Sezione Eventi Futuri -->
+    <section class="events full-events" id="events">
+        <div class="container">
+            <h2 class="section-title">Prossimi Eventi</h2>
+            <p class="section-description">Partecipa ai nostri eventi ufficiali e scala le classifiche della Lega Tekken 8 Messina</p>
+            
+            <div class="events-container" id="eventiContainer">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i> Caricamento eventi...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sezione Eventi Passati -->
+    <section class="events past-events" id="past-events">
+        <div class="container">
+            <h2 class="section-title">Eventi Passati</h2>
+            <p class="section-description">Guarda i risultati dei nostri eventi precedenti</p>
+            
+            <div class="events-container" id="eventiPassatiContainer">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i> Caricamento eventi passati...
+                </div>
+                </div>
+            </div>
+        </section>
+        
+    <!-- Sezione Informazioni Iscrizione -->
+    <section class="registration-info" id="registration">
+        <div class="container">
+            <h2 class="section-title">Come Iscriversi</h2>
+            <div class="registration-content">
+                <div class="registration-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Scegli un Evento</h3>
+                            <p>Seleziona l'evento a cui vuoi partecipare dal nostro calendario</p>
+            </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Contattaci</h3>
+                            <p>Unisciti al nostro gruppo <a href="https://chat.whatsapp.com/BUaniu9PJcJK5x3ejbGiEA">Whatsapp</a> e comunica la tua partecipazione</p>
+                        </div>
+                </div>
+                
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Conferma Iscrizione</h3>
+                            <p>Completa l'iscrizione pagando la quota e ricevendo la conferma</p>
+                    </div>
+                </div>
+                
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Partecipa e Divertiti</h3>
+                            <p>Arriva all'evento in orario, porta il tuo controller se preferisci e preparati a combattere!</p>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="registration-cta">
+                    <h3>Hai domande sull'iscrizione?</h3>
+                    <p>Contattaci e ti aiuteremo con la procedura di iscrizione</p>
+                    <a href="contatti.html" class="btn btn-primary">Contattaci</a>
+                </div>
+                </div>
+            </div>
+        </section>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="include-footer"></div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script>
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoiVZiPqbwtKmDC5Pw0Nw4bpLqzynCA5c",
+            authDomain: "tekkenredshift.firebaseapp.com",
+            databaseURL: "https://tekkenredshift-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tekkenredshift",
+            storageBucket: "tekkenredshift.firebasestorage.app",
+            messagingSenderId: "88169810750",
+            appId: "1:88169810750:web:060972498a69c259ab7a6f",
+            measurementId: "G-FLNMLFD0JC"
+        };
+
+        // Inizializzazione Firebase
+        if (typeof firebase !== 'undefined') {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            const database = firebase.database();
+            
+            // Carica gli eventi quando la pagina è pronta
+            document.addEventListener('DOMContentLoaded', () => {
+                caricaEventi();
+                
+                // Toggle Menu Mobile
+                const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+                const mainNav = document.getElementById('mainNav');
+                
+                mobileMenuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                });
+                
+                // Dark/Light Theme Toggle
+                const themeToggle = document.getElementById('themeToggle');
+                const themeIcon = themeToggle.querySelector('i');
+                
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-theme');
+                    
+                    themeIcon.classList.toggle('fa-moon');
+                    themeIcon.classList.toggle('fa-sun');
+                    
+                    // Salva preferenza tema
+                    const isDarkTheme = document.body.classList.contains('dark-theme');
+                    localStorage.setItem('darkTheme', isDarkTheme);
+                });
+                
+                // Ripristina il tema salvato
+                if (localStorage.getItem('darkTheme') === 'true') {
+                    document.body.classList.add('dark-theme');
+                    document.querySelector('#themeToggle i').classList.remove('fa-moon');
+                    document.querySelector('#themeToggle i').classList.add('fa-sun');
+                }
+                
+                // Animation for elements
+                function handleScrollAnimations() {
+                    const elements = document.querySelectorAll('.event-card, .step-card');
+                    
+                    elements.forEach(element => {
+                        const position = element.getBoundingClientRect();
+                        
+                        // Check if element is in viewport
+                        if(position.top < window.innerHeight && position.bottom >= 0) {
+                            element.classList.add('fade-in');
+                        }
+                    });
+                }
+                
+                handleScrollAnimations();
+                window.addEventListener('scroll', handleScrollAnimations);
+            });
+        } else {
+            console.error("Firebase non è disponibile!");
+        }
+        
+        // Carica eventi futuri e passati
+        function caricaEventi() {
+            const containerFuturi = document.getElementById('eventiContainer');
+            const containerPassati = document.getElementById('eventiPassatiContainer');
+            
+            if (!containerFuturi || !containerPassati) {
+                console.error("Contenitori eventi non trovati!");
+                return;
+            }
+            
+            containerFuturi.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Caricamento eventi...</div>';
+            containerPassati.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Caricamento eventi passati...</div>';
+            
+            firebase.database().ref('eventi').once('value')
+                .then(snapshot => {
+                    const eventi = snapshot.val() || {};
+                    let eventiArray = Object.entries(eventi);
+                    
+                    // Se non ci sono eventi
+                    if (eventiArray.length === 0) {
+                        containerFuturi.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>Nessun evento programmato</p>
+                            </div>`;
+                        containerPassati.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>Nessun evento passato</p>
+                            </div>`;
+                        return;
+                    }
+                    
+                    containerFuturi.innerHTML = '';
+                    containerPassati.innerHTML = '';
+                    
+                    // Separa eventi futuri e passati
+                    const oggi = new Date();
+                    oggi.setHours(0, 0, 0, 0); // Reset dell'ora per confrontare solo le date
+                    
+                    const eventiFuturi = [];
+                    const eventiPassati = [];
+                    
+                    eventiArray.forEach(([eventoId, evento]) => {
+                        const dataEvento = new Date(evento.data);
+                        if (dataEvento >= oggi) {
+                            eventiFuturi.push([eventoId, evento]);
+            } else {
+                            eventiPassati.push([eventoId, evento]);
+                        }
+                    });
+                    
+                    // Ordina eventi futuri (dal più vicino al più lontano)
+                    eventiFuturi.sort((a, b) => new Date(a[1].data) - new Date(b[1].data));
+                    
+                    // Ordina eventi passati (dal più recente al più vecchio)
+                    eventiPassati.sort((a, b) => new Date(b[1].data) - new Date(a[1].data));
+                    
+                    // Visualizza eventi futuri
+                    if (eventiFuturi.length === 0) {
+                        containerFuturi.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>Nessun evento futuro programmato</p>
+                            </div>`;
+                    } else {
+                        eventiFuturi.forEach(([eventoId, evento]) => {
+                            const dataEvento = new Date(evento.data);
+                            const formattedData = dataEvento.toLocaleDateString('it-IT', {
+                                weekday: 'long', 
+                                day: 'numeric', 
+                                month: 'long', 
+                                year: 'numeric'
+                            });
+                            
+                            // Calcola giorni mancanti
+                            const giorniMancanti = Math.ceil((dataEvento - oggi) / (1000 * 60 * 60 * 24));
+                            let countdownText = '';
+                            
+                            if (giorniMancanti === 0) {
+                                countdownText = `<span class="countdown-badge">Oggi!</span>`;
+                            } else if (giorniMancanti === 1) {
+                                countdownText = `<span class="countdown-badge">Domani!</span>`;
+                            } else if (giorniMancanti <= 7) {
+                                countdownText = `<span class="countdown-badge">Tra ${giorniMancanti} giorni</span>`;
+                            }
+                            
+                            // Immagine predefinita se non specificata
+                            const immagineEvento = evento.immagine || "https://i.imgur.com/Y2WXnK8.jpg";
+                            
+                            const eventCard = document.createElement('div');
+                            eventCard.className = 'event-card';
+                            eventCard.innerHTML = `
+                                <img src="${immagineEvento}" alt="${evento.nome}" class="event-img">
+                                <div class="event-info">
+                                    <h3 class="event-title">${evento.nome}</h3>
+                                    <p class="event-date"><i class="far fa-calendar-alt"></i> ${formattedData} ${countdownText}</p>
+                                    <p class="event-time"><i class="far fa-clock"></i> Inizio: ${evento.orario || 'Da definire'}</p>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> ${evento.luogo || 'Luogo da definire'}</p>
+                                    <p class="event-description">${evento.descrizione || 'Vieni a partecipare a questo evento della Lega Tekken 8 Messina!'}</p>
+                                    <div class="event-details">
+                                        <p><strong>Formato:</strong> ${evento.formato || 'Double Elimination'}</p>
+                                        <p><strong>Quota Iscrizione:</strong> ${evento.quota || '€15'}</p>
+                                        <p><strong>Premi:</strong> ${evento.premi || 'Accessori gaming, merchandising ufficiale Tekken 8'}</p>
+                                        <p><strong>Stato Iscrizioni:</strong> <span class="${evento.iscrizioneAperta ? 'iscrizione-aperta' : 'iscrizione-chiusa'}">${evento.iscrizioneAperta ? 'Aperte' : 'Chiuse'}</span></p>
+                                        <p><strong>Modalità Iscrizione:</strong> ${evento.modalitaIscrizione || 'Compila il modulo online'}</p>
+                                    </div>
+                                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScAxwNm6If2sCzhepZ-sV7tMtqh6wZ3SrZnubUI47ph3Oe4Jg/viewform?usp=dialog" target="_blank" class="event-link btn ${evento.iscrizioneAperta ? 'btn-primary' : 'btn-secondary'}">${evento.iscrizioneAperta ? 'Iscriviti' : 'Iscrizioni Chiuse'}</a>
+                        </div>
+                    `;
+                    
+                            containerFuturi.appendChild(eventCard);
+                        });
+                    }
+                    
+                    // Visualizza eventi passati
+                    if (eventiPassati.length === 0) {
+                        containerPassati.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>Nessun evento passato</p>
+                            </div>`;
+                    } else {
+                        eventiPassati.forEach(([eventoId, evento]) => {
+                            const dataEvento = new Date(evento.data);
+                            const formattedData = dataEvento.toLocaleDateString('it-IT', {
+                                day: 'numeric', 
+                                month: 'long', 
+                                year: 'numeric'
+                            });
+                            
+                            // Immagine predefinita se non specificata
+                            const immagineEvento = evento.immagine || "https://i.imgur.com/JtBPMsK.jpg";
+                            
+                            const eventCard = document.createElement('div');
+                            eventCard.className = 'event-card evento-passato';
+                            eventCard.innerHTML = `
+                                <img src="${immagineEvento}" alt="${evento.nome}" class="event-img">
+                                <div class="event-info">
+                                    <h3 class="event-title">${evento.nome}</h3>
+                                    <p class="event-date"><i class="far fa-calendar-alt"></i> ${formattedData}</p>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> ${evento.luogo || 'Luogo non specificato'}</p>
+                                    <div class="event-results">
+                                        <h4>Risultati:</h4>
+                                        <ol class="winners-list">
+                                            ${evento.risultati ? generaListaVincitori(evento.risultati) : '<li>Risultati non disponibili</li>'}
+                                        </ol>
+                                    </div>
+                                    ${evento.galleria ? `<a href="${evento.galleria}" target="_blank" class="event-link btn btn-secondary">Galleria Foto</a>` : ''}
+                                    ${evento.videoHighlights ? `<a href="${evento.videoHighlights}" target="_blank" class="event-link btn btn-secondary">Highlights</a>` : ''}
+                                </div>
+                            `;
+                            
+                            containerPassati.appendChild(eventCard);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento degli eventi:", error);
+                    containerFuturi.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Errore nel caricamento degli eventi</p>
+                        </div>
+                    `;
+                    containerPassati.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Errore nel caricamento degli eventi passati</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // Funzione ausiliaria per generare la lista dei vincitori
+        function generaListaVincitori(risultati) {
+            if (!risultati || !Array.isArray(risultati)) return '<li>Risultati non disponibili</li>';
+            
+            return risultati.map(vincitore => `<li>${vincitore}</li>`).join('');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classifiche - Lega Tekken 8 Messina</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-trophy"></i>
+            <span>Lega Tekken 8 Messina</span>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="frontend.html" class="active">Classifiche</a></li>
+                <li><a href="tornei.html">Tornei</a></li>
+                <li><a href="regolamento.html">Regolamento</a></li>
+                <li><a href="contatti.html">Contatti</a></li>
+            </ul>
+        </nav>
+        <button id="themeToggle" class="theme-toggle" aria-label="Cambia tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+    
+    <div class="container">
+        <!-- Classifica Torneo -->
+        <div class="section fade-in">
+            <h2><i class="fas fa-list-ol"></i> Classifica Torneo</h2>
+            <select id="selectTorneo" onchange="updateClassificaTorneo()">
+                <option value="" disabled selected>Caricamento tornei...</option>
+            </select>
+            <div id="torneoLinks" class="torneo-links"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posizione</th>
+                        <th>Giocatore</th>
+                        <th>Punti</th>
+                    </tr>
+                </thead>
+                <tbody id="classificaTorneoBody">
+                    <tr>
+                        <td colspan="3" class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento classifica...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Qualificati Tekken 8 -->
+        <div class="section fade-in">
+            <h2><i class="fas fa-flag-checkered"></i> Qualificati Tekken 8</h2>
+            <table class="qualificati-table">
+                <thead>
+                    <tr>
+                        <th>Giocatore</th>
+                        <th>Torneo</th>
+                    </tr>
+                </thead>
+                <tbody id="qualificatiBody">
+                    <tr>
+                        <td colspan="2" class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento qualificati...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Punti Totali -->
+        <div class="section fade-in">
+            <h2><i class="fas fa-star"></i> Punti Totali</h2>
+            <table class="punti-totali">
+                <thead>
+                    <tr>
+                        <th>Giocatore</th>
+                        <th>Punti</th>
+                    </tr>
+                </thead>
+                <tbody id="puntiTotaliBody">
+                    <tr>
+                        <td colspan="2" class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento punti...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Storico Tornei Giocatori -->
+        <div class="section fade-in">
+            <h2><i class="fas fa-history"></i> Storico Partecipazioni</h2>
+            <table class="storico-table">
+                <thead>
+                    <tr>
+                        <th>Giocatore</th>
+                        <th>Posizioni</th>
+                    </tr>
+                </thead>
+                <tbody id="storicoBody">
+                    <tr>
+                        <td colspan="2" class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento storico...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Calendario Eventi Futuri -->
+        <div class="section fade-in">
+            <h2><i class="fas fa-calendar-alt"></i> Calendario Eventi</h2>
+            <table class="eventi-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Evento</th>
+                        <th>Luogo</th>
+                        <th>Orario</th>
+                        <th>Iscrizione</th>
+                    </tr>
+                </thead>
+                <tbody id="eventiBody">
+                    <tr>
+                        <td colspan="5" class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento eventi...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Premi Riscattabili -->
+        <div class="section fade-in">
+            <h2><i class="fas fa-gift"></i> Premi</h2>
+            <table class="premi-table">
+                <thead>
+                    <tr>
+                        <th>Soglia</th>
+                        <th>Premio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>800 punti</td><td>8 bustine</td></tr>
+                    <tr><td>720 punti</td><td>7 bustine</td></tr>
+                    <tr><td>630 punti</td><td>6 bustine</td></tr>
+                    <tr><td>540 punti</td><td>5 bustine</td></tr>
+                    <tr><td>450 punti</td><td>4 bustine</td></tr>
+                    <tr><td>400 punti</td><td>3 bustine</td></tr>
+                    <tr><td>350 punti</td><td>2 bustine</td></tr>
+                    <tr><td>250 punti</td><td>1 bustina</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal per profilo utente -->
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalPlayerName">Nome Giocatore</h2>
+                <button onclick="closeUserProfile()" class="modal-close">&times;</button>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="statTornei">0</div>
+                    <div class="stat-label">Tornei</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statPuntiTotali">0</div>
+                    <div class="stat-label">Punti Totali</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statMediaPunti">0</div>
+                    <div class="stat-label">Media Punti</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statMigliorPosizione">-</div>
+                    <div class="stat-label">Miglior Posizione</div>
+                </div>
+            </div>
+            
+            <h3>Storico Tornei</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Torneo</th>
+                        <th>Data</th>
+                        <th>Posizione</th>
+                        <th>Punti</th>
+                        <th>Partecipanti</th>
+                    </tr>
+                </thead>
+                <tbody id="playerTournamentHistory">
+                    <tr>
+                        <td colspan="5" class="loading">
+                            <i class="fas fa-spinner"></i> Caricamento tornei...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="include-footer"></div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script>
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoiVZiPqbwtKmDC5Pw0Nw4bpLqzynCA5c",
+            authDomain: "tekkenredshift.firebaseapp.com",
+            databaseURL: "https://tekkenredshift-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tekkenredshift",
+            storageBucket: "tekkenredshift.firebasestorage.app",
+            messagingSenderId: "88169810750",
+            appId: "1:88169810750:web:060972498a69c259ab7a6f",
+            measurementId: "G-FLNMLFD0JC"
+        };
+
+        // Inizializzazione Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let torneiData = {};
+
+        // Funzione per cambiare tema
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const html = document.documentElement;
+            const themeIcon = this.querySelector('i');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        function updateClassificaTorneo() {
+            const torneoId = document.getElementById('selectTorneo').value;
+            const tableBody = document.getElementById('classificaTorneoBody');
+            const linksContainer = document.getElementById('torneoLinks');
+            tableBody.innerHTML = '';
+            linksContainer.innerHTML = '';
+
+            if(torneoId && torneiData[torneoId]) {
+                const torneo = torneiData[torneoId];
+                
+                // Aggiungi il link al bracket Challonge se disponibile
+                if (torneo.linkChallonge) {
+                    linksContainer.innerHTML = `
+                        <a href="${torneo.linkChallonge}" target="_blank" class="challonge-link">
+                            <i class="fas fa-trophy"></i> Visualizza Bracket Challonge
+                        </a>
+                    `;
+                }
+                
+                const giocatori = Object.values(torneo.giocatori || {}); 
+                giocatori.sort((a, b) => a.posizione - b.posizione)
+                    .forEach(giocatore => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${giocatore.posizione}°</td>
+                            <td class="player-name" onclick="showUserProfile(null, '${giocatore.nome}')">${giocatore.nome}</td>
+                            <td>${giocatore.punti}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+            }
+        }
+
+        function updateStoricoGiocatori() {
+            console.log("Aggiorno storico giocatori - Versione personalizzata");
+            const container = document.getElementById('storicoBody');
+            container.innerHTML = '';
+            
+            // Oggetto per memorizzare lo storico partecipazioni (usando il nome come chiave)
+            const giocatoriStorico = {};
+            
+            // Scorro tutti i tornei e raccolgo le posizioni
+            Object.values(torneiData).forEach(torneo => {
+                console.log("Processo torneo per storico:", torneo.nome);
+                // Converti i giocatori in array e ordinali per posizione
+                const giocatoriArray = Object.values(torneo.giocatori || {});
+                giocatoriArray.sort((a, b) => a.posizione - b.posizione);
+                
+                // Assegna posizione corretta a ciascun giocatore
+                giocatoriArray.forEach((giocatore, index) => {
+                    const nome = giocatore.nome;
+                    const posizione = parseInt(giocatore.posizione) || (index + 1);
+                    
+                    console.log(`Storico - Giocatore: ${nome}, Torneo: ${torneo.nome}, Posizione: ${posizione}`);
+                    
+                    // Inizializza l'array delle partecipazioni se è la prima volta
+                    if (!giocatoriStorico[nome]) {
+                        giocatoriStorico[nome] = [];
+                    }
+                    
+                    // Aggiungi questo torneo allo storico del giocatore
+                    giocatoriStorico[nome].push({
+                        torneo: torneo.nome,
+                        posizione: posizione
+                    });
+                });
+            });
+
+            console.log("Giocatori storico dopo elaborazione:", giocatoriStorico);
+            
+            // Crea una riga per ogni giocatore UNICO
+            Object.entries(giocatoriStorico).forEach(([nome, partecipazioni]) => {
+                console.log(`Creo riga storico per ${nome} con ${partecipazioni.length} partecipazioni`);
+                const row = document.createElement('tr');
+                
+                // Formatta le partecipazioni come solo posizioni
+                const posizioni = partecipazioni.map(p => `${p.posizione}°`).join(' - ');
+                
+                row.innerHTML = `
+                    <td class="player-name" onclick="showUserProfile(null, '${nome}')">${nome}</td>
+                    <td>${posizioni}</td>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+
+        function updatePuntiTotali() {
+            console.log("Aggiorno punti totali - Versione personalizzata");
+            const container = document.getElementById('puntiTotaliBody');
+            container.innerHTML = '';
+            
+            // Oggetto per memorizzare i punti totali per ogni giocatore (usando il nome come chiave)
+            const giocatoriPunti = {};
+            
+            // Raccolgo tutti i dati dai tornei
+            Object.values(torneiData).forEach(torneo => {
+                console.log("Processo torneo:", torneo.nome);
+                // Raccolgo tutti i giocatori di questo torneo
+                Object.values(torneo.giocatori || {}).forEach(giocatore => {
+                    const nome = giocatore.nome;
+                    const punti = parseInt(giocatore.punti) || 0;
+                    
+                    console.log(`Giocatore: ${nome}, Punti: ${punti}`);
+                    
+                    // Se è la prima volta che vedo questo giocatore (per nome), inizializzo il contatore
+                    if (!giocatoriPunti[nome]) {
+                        giocatoriPunti[nome] = 0;
+                    }
+                    
+                    // Aggiungo i punti di questo torneo
+                    giocatoriPunti[nome] += punti;
+                });
+            });
+
+            console.log("Giocatori punti dopo elaborazione:", giocatoriPunti);
+
+            // Creo una riga per ogni giocatore UNICO, ordinati per punti totali
+            Object.entries(giocatoriPunti)
+                .sort((a, b) => b[1] - a[1]) // Ordino per punti totali (dal più alto al più basso)
+                .forEach(([nome, punti]) => {
+                    console.log(`Creo riga per ${nome} con ${punti} punti`);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="player-name" onclick="showUserProfile(null, '${nome}')">${nome}</td>
+                        <td>${punti}</td>
+                    `;
+                    container.appendChild(row);
+                });
+        }
+
+        function updateQualificati() {
+            const container = document.getElementById('qualificatiBody');
+            container.innerHTML = '';
+            
+            const qualificati = [];
+            Object.values(torneiData).forEach(torneo => {
+                Object.values(torneo.giocatori || {}).forEach(giocatore => {
+                    if(giocatore.qualificato) {
+                        qualificati.push({
+                            nome: giocatore.nome,
+                            torneo: torneo.nome
+                        });
+                    }
+                });
+            });
+
+            qualificati.forEach(q => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="player-name" onclick="showUserProfile(null, '${q.nome}')">${q.nome}</td>
+                    <td>${q.torneo}</td>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function init() {
+            console.log("Inizializzazione applicazione...");
+            // Carica i dati dei tornei da Firebase
+            database.ref('tornei').once('value')
+                .then(snapshot => {
+                    console.log("Dati tornei ricevuti da Firebase");
+                torneiData = snapshot.val() || {};
+                    console.log("Numero tornei caricati:", Object.keys(torneiData).length);
+                
+                    // Popola il dropdown dei tornei
+                const select = document.getElementById('selectTorneo');
+                select.innerHTML = '<option value="" disabled selected>Seleziona Torneo</option>';
+                Object.entries(torneiData).forEach(([id, torneo]) => {
+                    const option = document.createElement('option');
+                    option.value = id;
+                    option.textContent = torneo.nome;
+                    select.appendChild(option);
+                });
+
+                    // Inizializza le tabelle con i dati
+                    console.log("Chiamo funzioni di aggiornamento dati...");
+                updateClassificaTorneo();
+                    updateStoricoGiocatori();  // Versione personalizzata
+                    updatePuntiTotali();       // Versione personalizzata
+                updateQualificati();
+                    updateEventi();           // Calendario eventi futuri
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento dei dati:", error);
+                    alert("Si è verificato un errore nel caricamento dei dati. Ricarica la pagina.");
+                });
+        }
+
+        // Assicuriamoci che init venga chiamato dopo il caricamento della pagina
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM caricato, inizializzo applicazione...");
+            // Carica il tema salvato
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.querySelector('#themeToggle i');
+            
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // Esponi le funzioni al contesto globale
+            window.showUserProfile = showUserProfile;
+            window.closeUserProfile = closeUserProfile;
+            window.updateClassificaTorneo = updateClassificaTorneo;
+            
+            // Inizializza l'applicazione
+            init();
+        });
+
+        // Sovrascrive le funzioni in script.js per evitare conflitti
+        function showUserProfile(giocatoreId, giocatoreNome) {
+            // Imposta il nome del giocatore nel modal
+            document.getElementById('modalPlayerName').textContent = giocatoreNome;
+            
+            // Carica i dati del giocatore
+            database.ref('tornei').once('value')
+                .then(snapshot => {
+                    const tornei = snapshot.val() || {};
+                    const storicoTornei = [];
+                    let puntiTotali = 0;
+                    let migliorPosizione = Infinity;
+                    
+                    // Raccogli i dati del giocatore da tutti i tornei
+                    Object.keys(tornei).forEach(torneoId => {
+                        const torneo = tornei[torneoId];
+                        const giocatori = torneo.giocatori || {};
+                        
+                        // Trova il giocatore per NOME invece che per ID
+                        const giocatoriArray = Object.values(giocatori);
+                        const matchingGiocatori = giocatoriArray.filter(g => g.nome === giocatoreNome);
+                        
+                        matchingGiocatori.forEach(giocatore => {
+                            const punti = giocatore.punti || 0;
+                            puntiTotali += punti;
+                            
+                            // Calcola la posizione del giocatore in questo torneo
+                            const posizione = giocatore.posizione || 0;
+                            
+                            if (posizione > 0 && posizione < migliorPosizione) {
+                                migliorPosizione = posizione;
+                            }
+                            
+                            storicoTornei.push({
+                                torneoId: torneoId,
+                                torneoNome: torneo.nome,
+                                data: torneo.creatoIl || '',
+                                posizione: posizione,
+                                punti: punti,
+                                partecipanti: giocatoriArray.length
+                            });
+                        });
+                    });
+                    
+                    // Ordina lo storico per data (più recenti prima)
+                    storicoTornei.sort((a, b) => {
+                        return new Date(b.data) - new Date(a.data);
+                    });
+                    
+                    // Aggiorna le statistiche
+                    document.getElementById('statTornei').textContent = storicoTornei.length;
+                    document.getElementById('statPuntiTotali').textContent = puntiTotali;
+                    document.getElementById('statMediaPunti').textContent = storicoTornei.length > 0 ? 
+                        Math.round(puntiTotali / storicoTornei.length) : 0;
+                    document.getElementById('statMigliorPosizione').textContent = 
+                        migliorPosizione !== Infinity ? `${migliorPosizione}°` : '-';
+                    
+                    // Aggiorna la tabella dello storico tornei
+                    const tbody = document.getElementById('playerTournamentHistory');
+                    
+                    if (storicoTornei.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="no-data">Nessun torneo giocato</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    tbody.innerHTML = '';
+                    storicoTornei.forEach(torneo => {
+                        const row = document.createElement('tr');
+                        const data = torneo.data ? new Date(torneo.data).toLocaleDateString() : '-';
+                        
+                        row.innerHTML = `
+                            <td>${torneo.torneoNome}</td>
+                            <td>${data}</td>
+                            <td>${torneo.posizione}°</td>
+                            <td>${torneo.punti}</td>
+                            <td>${torneo.partecipanti}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    
+                    // Mostra il modal
+                    document.getElementById('userProfileModal').style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento del profilo:", error);
+                    alert("Errore nel caricamento del profilo utente");
+                });
+        }
+
+        function closeUserProfile() {
+            document.getElementById('userProfileModal').style.display = 'none';
+        }
+        
+        // Funzione per caricare e visualizzare gli eventi futuri
+        function updateEventi() {
+            const container = document.getElementById('eventiBody');
+            container.innerHTML = '';
+            
+            // Carica eventi futuri da Firebase
+            database.ref('eventi').once('value')
+                .then(snapshot => {
+                    const eventi = snapshot.val() || {};
+                    let eventiArray = Object.values(eventi);
+                    
+                    // Se non ci sono eventi programmati, mostra un messaggio
+                    if (eventiArray.length === 0) {
+                        container.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="no-data">Nessun evento programmato</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    // Filtra solo gli eventi futuri
+                    const oggi = new Date();
+                    oggi.setHours(0, 0, 0, 0); // Reset dell'ora per confrontare solo le date
+                    
+                    eventiArray = eventiArray.filter(evento => {
+                        const dataEvento = new Date(evento.data);
+                        return dataEvento >= oggi;
+                    });
+                    
+                    // Ordina gli eventi per data (dal più vicino al più lontano)
+                    eventiArray.sort((a, b) => new Date(a.data) - new Date(b.data));
+                    
+                    // Se dopo il filtraggio non ci sono eventi futuri
+                    if (eventiArray.length === 0) {
+                        container.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="no-data">Nessun evento futuro programmato</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    // Crea una riga per ogni evento
+                    eventiArray.forEach((evento, index) => {
+                        const dataEvento = new Date(evento.data);
+                        const formattedData = dataEvento.toLocaleDateString('it-IT', {
+                            weekday: 'long', 
+                            day: 'numeric', 
+                            month: 'long', 
+                            year: 'numeric'
+                        });
+                        
+                        // Determina se è il prossimo evento
+                        const isProssimo = index === 0;
+                        
+                        // Calcola giorni mancanti
+                        const oggi = new Date();
+                        const giorniMancanti = Math.ceil((dataEvento - oggi) / (1000 * 60 * 60 * 24));
+                        let countdownText = '';
+                        
+                        if (giorniMancanti === 0) {
+                            countdownText = `<span class="badge-countdown">Oggi!</span>`;
+                        } else if (giorniMancanti === 1) {
+                            countdownText = `<span class="badge-countdown">Domani!</span>`;
+                        } else if (giorniMancanti <= 7) {
+                            countdownText = `<span class="badge-countdown">Tra ${giorniMancanti} giorni</span>`;
+                        }
+                        
+                        // Formatta lo stato delle iscrizioni
+                        let iscrizioneHtml = '';
+                        if (evento.iscrizioneAperta) {
+                            iscrizioneHtml = `<span class="iscrizione-aperta"><i class="fas fa-check-circle"></i> Aperta</span>`;
+                            if (evento.modalitaIscrizione) {
+                                iscrizioneHtml += `<br><small>${evento.modalitaIscrizione}</small>`;
+                            }
+                        } else {
+                            iscrizioneHtml = `<span class="iscrizione-chiusa"><i class="fas fa-times-circle"></i> Chiusa</span>`;
+                        }
+                        
+                        const row = document.createElement('tr');
+                        if (isProssimo) row.classList.add('evento-prossimo');
+                        
+                        row.innerHTML = `
+                            <td>${formattedData} ${countdownText}</td>
+                            <td>${evento.nome}</td>
+                            <td>
+                                <div class="eventi-location">
+                                    <i class="fas fa-map-marker-alt eventi-icon"></i>
+                                    ${evento.luogo}
+                                </div>
+                            </td>
+                            <td><i class="far fa-clock eventi-icon"></i> ${evento.orario}</td>
+                            <td>${iscrizioneHtml}</td>
+                        `;
+                        
+                        container.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento degli eventi:", error);
+                    container.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="error">Errore nel caricamento degli eventi</td>
+                        </tr>
+                    `;
+                });
+        }
+    </script>
+</body>
+</html>

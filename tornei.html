@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tornei ufficiali della Lega Tekken 8 Messina">
+    <title>Tornei - Lega Tekken 8 Messina</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS personalizzato -->
+    <link rel="stylesheet" href="tekken8-styles.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="tekken8-logo.png" alt="Logo Tekken 8" class="logo-img">
+                <span class="site-title">Lega Tekken 8 Messina</span>
+        </div>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="tornei.html" class="nav-link active">Tornei</a></li>
+                    <li class="nav-item"><a href="classifica.html" class="nav-link">Classifiche</a></li>
+                    <li class="nav-item"><a href="eventi.html" class="nav-link">Eventi</a></li>
+                    <li class="nav-item"><a href="regolamento.html" class="nav-link">Regolamento</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+            </ul>
+        </nav>
+            <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section per Tornei -->
+    <section class="hero eventi-hero" style="background: none; position: relative; overflow: hidden; height: 400px;">
+        <div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)); z-index: 1;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 0;">
+            <img src="tornei.png" alt="Tornei Banner" style="width: 100%; height: 100%; object-fit: cover; opacity: 1;">
+        </div>
+        <div class="hero-content fade-in" style="position: relative; z-index: 2; text-align: center; max-width: 900px;">
+            <h1 class="hero-title" style="font-size: 4rem; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 3px; margin-bottom: 1.5rem; font-weight: 800; text-transform: uppercase; color: #f9f6e5;">Tornei</h1>
+            <p class="hero-subtitle" style="font-size: 1.3rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); color: #f9f6e5;">Competizioni ufficiali della Lega Tekken 8 Messina</p>
+        </div>
+    </section>
+    
+    <!-- Contenuto principale -->
+    <main class="container">
+        <!-- Intro Tornei -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-trophy"></i> Competizioni</h2>
+            <p class="section-description">
+                Qui puoi visualizzare i nostri tornei ospitati su Challonge. Partecipa e segui l'andamento delle competizioni in tempo reale! 
+                I tornei della Lega Tekken 8 Messina si tengono mensilmente e contribuiscono alla classifica generale.
+            </p>
+            
+            <!-- Prossimi Tornei -->
+            <div class="upcoming-tournaments">
+                <h3><i class="fas fa-calendar-alt"></i> Prossimi Tornei</h3>
+                <div id="nextTournaments" class="upcoming-tournaments-grid">
+                    <div class="tournament-card">
+                        <div class="tournament-date">
+                            <i class="far fa-calendar"></i> 22 Dicembre 2023
+                        </div>
+                        <h4 class="tournament-title">Torneo Regionale Messina</h4>
+                        <div class="tournament-location">
+                            <i class="fas fa-map-marker-alt"></i> Games Academy Messina
+                        </div>
+                        <div class="tournament-details">
+                            <p><strong>Formato:</strong> Double Elimination</p>
+                            <p><strong>Iscrizione:</strong> €20</p>
+                            <p><strong>Premi:</strong> Montepremi €800 e premi esclusivi</p>
+                        </div>
+                        <div class="tournament-action">
+                            <a href="eventi.html" class="btn btn-primary">Dettagli e Iscrizione</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tournament-card">
+                        <div class="tournament-date">
+                            <i class="far fa-calendar"></i> 15 Gennaio 2024
+                        </div>
+                        <h4 class="tournament-title">Qualificazioni Reggio Calabria</h4>
+                        <div class="tournament-location">
+                            <i class="fas fa-map-marker-alt"></i> Game Time, Reggio Calabria
+                        </div>
+                        <div class="tournament-details">
+                            <p><strong>Formato:</strong> Round Robin + Eliminazione diretta</p>
+                            <p><strong>Iscrizione:</strong> €15</p>
+                            <p><strong>Premi:</strong> Qualificazione al Championship regionale per i primi 4 classificati</p>
+                        </div>
+                        <div class="tournament-action">
+                            <a href="eventi.html" class="btn btn-primary">Dettagli e Iscrizione</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tournament-card">
+                        <div class="tournament-date">
+                            <i class="far fa-calendar"></i> 5 Febbraio 2024
+                        </div>
+                        <h4 class="tournament-title">Championship Messina</h4>
+                        <div class="tournament-location">
+                            <i class="fas fa-map-marker-alt"></i> Centro Commerciale Messina
+                        </div>
+                        <div class="tournament-details">
+                            <p><strong>Formato:</strong> Girone + Top 8</p>
+                            <p><strong>Iscrizione:</strong> €25</p>
+                            <p><strong>Premi:</strong> Montepremi €1500 e ospiti speciali</p>
+                        </div>
+                        <div class="tournament-action">
+                            <a href="eventi.html" class="btn btn-primary">Dettagli e Iscrizione</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tornei Passati con Challonge Embedding -->
+        <section class="section-container fade-in tornei-section">
+            <h2 class="section-title"><i class="fas fa-history"></i> Tornei Passati</h2>
+            
+            <div class="tornei-grid">
+                <!-- Torneo 1: Marzo 2023 -->
+                <div class="torneo-embed">
+                    <h3>Torneo Mensile - Marzo 2023</h3>
+                    <div class="challonge-container">
+                        <iframe src="1https://challonge.com/it/u3goks3t/module?show_standings=1" width="100%" height="650" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
+                    </div>
+                </div>
+                
+                <!-- Torneo 2: Aprile 2023 -->
+                <div class="torneo-embed">
+                    <h3>Torneo Mensile - Aprile 2023</h3>
+                    <div class="challonge-container">
+                        <iframe src="1https://challonge.com/it/x0d9zw3/module?show_standings=1" width="100%" height="650" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tournament-note">
+                <p><i class="fas fa-info-circle"></i> <strong>Nota:</strong> Per la partecipazione ai prossimi tornei, contatta gli organizzatori tramite la nostra pagina dei contatti o sui nostri canali social.</p>
+            </div>
+        </section>
+        
+        <!-- Regole e Formato -->
+        <section class="section-container fade-in">
+            <h2 class="section-title"><i class="fas fa-gavel"></i> Regole e Formato</h2>
+            
+            <div class="tournament-rules">
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Regolamento Ufficiale</h3>
+                        <p>I nostri tornei seguono il regolamento ufficiale dei tornei competitivi di Tekken 8. Assicurati di conoscere le regole prima di partecipare.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Formato Tornei</h3>
+                        <p>La maggior parte dei tornei si svolge in formato Double Elimination o con una fase a gironi seguita da una fase a eliminazione diretta, in base al numero di partecipanti.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Sistema Punti</h3>
+                        <p>Ogni torneo assegna punti per la classifica generale. I punti accumulati ti permettono di qualificarti per eventi speciali e di riscattare premi esclusivi.</p>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <div class="rule-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="rule-content">
+                        <h3>Set e Match</h3>
+                        <p>Gli incontri si svolgono al meglio dei 3 round, con match FT2 (first to 2) nelle fasi iniziali e FT3 (first to 3) nelle fasi finali. Le finali si giocano in FT3 o FT5 in base al torneo.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tournament-action-center">
+                <a href="regolamento.html" class="btn btn-secondary">Visualizza il Regolamento Completo</a>
+        </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="include-footer"></div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script>
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoiVZiPqbwtKmDC5Pw0Nw4bpLqzynCA5c",
+            authDomain: "tekkenredshift.firebaseapp.com",
+            databaseURL: "https://tekkenredshift-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tekkenredshift",
+            storageBucket: "tekkenredshift.firebasestorage.app",
+            messagingSenderId: "88169810750",
+            appId: "1:88169810750:web:060972498a69c259ab7a6f",
+            measurementId: "G-FLNMLFD0JC"
+        };
+
+        // Inizializzazione Firebase
+        let database;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log("Firebase inizializzato con successo");
+        } catch (error) {
+            console.error("Errore nell'inizializzazione di Firebase:", error);
+        }
+
+        // Toggle tema chiaro/scuro
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            const icon = this.querySelector('i');
+            
+            if (icon.classList.contains('fa-moon')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            // Salva preferenza tema
+            const isDarkTheme = document.body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDarkTheme);
+        });
+        
+        // Toggle menu mobile
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+        });
+
+        // Inizializzazione all'avvio
+        function init() {
+            // Ripristina il tema salvato
+            if (localStorage.getItem('darkTheme') === 'true') {
+                document.body.classList.add('dark-theme');
+                document.querySelector('#themeToggle i').classList.remove('fa-moon');
+                document.querySelector('#themeToggle i').classList.add('fa-sun');
+            }
+            
+            // Altri inizializzazioni se necessario
+            loadUpcomingTournaments();
+        }
+
+        // Carica tornei imminenti da Firebase (se disponibili)
+        function loadUpcomingTournaments() {
+            const container = document.getElementById('nextTournaments');
+            if (!container) return;
+            
+            // Mostra un indicatore di caricamento
+            container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Caricamento tornei in corso...</div>';
+            
+            // Controlla se Firebase è disponibile
+            if (!database) {
+                console.error("Database Firebase non disponibile");
+                // Fallback ai dati statici già presenti nell'HTML
+                container.innerHTML = '';
+                
+                // Ricrea le card statiche degli eventi
+                const torneiStatici = [
+                    {
+                        data: "22 Dicembre 2023",
+                        nome: "Torneo Regionale Messina",
+                        luogo: "Games Academy Messina",
+                        formato: "Double Elimination",
+                        quota: "€20",
+                        premi: "Montepremi €800 e premi esclusivi"
+                    },
+                    {
+                        data: "15 Gennaio 2024",
+                        nome: "Qualificazioni Reggio Calabria",
+                        luogo: "Game Time, Reggio Calabria",
+                        formato: "Round Robin + Eliminazione diretta",
+                        quota: "€15",
+                        premi: "Qualificazione al Championship regionale per i primi 4 classificati"
+                    },
+                    {
+                        data: "5 Febbraio 2024",
+                        nome: "Championship Messina",
+                        luogo: "Centro Commerciale Messina",
+                        formato: "Girone + Top 8",
+                        quota: "€25",
+                        premi: "Montepremi €1500 e ospiti speciali"
+                    }
+                ];
+                
+                torneiStatici.forEach(torneo => {
+                    const tournamentCard = document.createElement('div');
+                    tournamentCard.className = 'tournament-card';
+                    tournamentCard.innerHTML = `
+                        <div class="tournament-date">
+                            <i class="far fa-calendar"></i> ${torneo.data}
+                        </div>
+                        <h4 class="tournament-title">${torneo.nome}</h4>
+                        <div class="tournament-location">
+                            <i class="fas fa-map-marker-alt"></i> ${torneo.luogo}
+                        </div>
+                        <div class="tournament-details">
+                            <p><strong>Formato:</strong> ${torneo.formato}</p>
+                            <p><strong>Iscrizione:</strong> ${torneo.quota}</p>
+                            <p><strong>Premi:</strong> ${torneo.premi}</p>
+                        </div>
+                        <div class="tournament-action">
+                            <a href="eventi.html" class="btn btn-primary">Dettagli e Iscrizione</a>
+                        </div>
+                    `;
+                    container.appendChild(tournamentCard);
+                });
+                
+                return;
+            }
+            
+            // Se Firebase è disponibile, carica i dati
+            database.ref('eventi').once('value')
+                .then(snapshot => {
+                    const eventi = snapshot.val() || {};
+                    const eventiArray = Object.entries(eventi);
+                    
+                    // Se non ci sono eventi, mostra un messaggio
+                    if (eventiArray.length === 0) {
+                        container.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>Nessun torneo programmato</p>
+                            </div>`;
+                        return;
+                    }
+                    
+                    // Filtra solo gli eventi futuri
+                    const oggi = new Date();
+                    oggi.setHours(0, 0, 0, 0); // Reset dell'ora per confrontare solo le date
+                    
+                    const eventiFuturi = eventiArray
+                        .filter(([_, evento]) => {
+                            if (!evento.data) return false;
+                            
+                            try {
+                                const dataEvento = new Date(evento.data);
+                                return dataEvento >= oggi;
+                            } catch (e) {
+                                console.error("Errore nel parsing della data:", e);
+                                return false;
+                            }
+                        })
+                        .sort((a, b) => new Date(a[1].data) - new Date(b[1].data)); // Ordina per data
+                    
+                    // Se non ci sono eventi futuri, mostra un messaggio
+                    if (eventiFuturi.length === 0) {
+                        container.innerHTML = `
+                            <div class="no-data">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>Nessun torneo futuro programmato</p>
+                            </div>`;
+                        return;
+                    }
+                    
+                    // Crea le card per ogni evento futuro
+                    container.innerHTML = '';
+                    eventiFuturi.slice(0, 3).forEach(([eventoId, evento]) => {
+                        const dataEvento = new Date(evento.data);
+                        const formattedData = dataEvento.toLocaleDateString('it-IT', {
+                            day: 'numeric', 
+                            month: 'long', 
+                            year: 'numeric'
+                        });
+                        
+                        // Crea una card per ogni evento
+                        const tournamentCard = document.createElement('div');
+                        tournamentCard.className = 'tournament-card';
+                        tournamentCard.innerHTML = `
+                            <div class="tournament-date">
+                                <i class="far fa-calendar"></i> ${formattedData}
+                            </div>
+                            <h4 class="tournament-title">${evento.nome}</h4>
+                            <div class="tournament-location">
+                                <i class="fas fa-map-marker-alt"></i> ${evento.luogo || 'Luogo da definire'}
+                            </div>
+                            <div class="tournament-details">
+                                <p><strong>Formato:</strong> ${evento.formato || 'Double Elimination'}</p>
+                                <p><strong>Iscrizione:</strong> ${evento.quota || '€15'}</p>
+                                <p><strong>Premi:</strong> ${evento.premi || 'Carte promo esclusive, tappetini di gioco ufficiali'}</p>
+                            </div>
+                            <div class="tournament-action">
+                                <a href="eventi.html" class="btn btn-primary">Dettagli e Iscrizione</a>
+                            </div>
+                        `;
+                        
+                        container.appendChild(tournamentCard);
+                    });
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento degli eventi:", error);
+                    // In caso di errore, mostra i dati statici
+                    container.innerHTML = '';
+                    
+                    // Ricrea le card statiche degli eventi
+                    const torneiStatici = [
+                        {
+                            data: "22 Dicembre 2023",
+                            nome: "Torneo Regionale Messina",
+                            luogo: "Games Academy Messina",
+                            formato: "Double Elimination",
+                            quota: "€20",
+                            premi: "Montepremi €800 e premi esclusivi"
+                        },
+                        {
+                            data: "15 Gennaio 2024",
+                            nome: "Qualificazioni Reggio Calabria",
+                            luogo: "Game Time, Reggio Calabria",
+                            formato: "Round Robin + Eliminazione diretta",
+                            quota: "€15",
+                            premi: "Qualificazione al Championship regionale per i primi 4 classificati"
+                        },
+                        {
+                            data: "5 Febbraio 2024",
+                            nome: "Championship Messina",
+                            luogo: "Centro Commerciale Messina",
+                            formato: "Girone + Top 8",
+                            quota: "€25",
+                            premi: "Montepremi €1500 e ospiti speciali"
+                        }
+                    ];
+                    
+                    torneiStatici.forEach(torneo => {
+                        const tournamentCard = document.createElement('div');
+                        tournamentCard.className = 'tournament-card';
+                        tournamentCard.innerHTML = `
+                            <div class="tournament-date">
+                                <i class="far fa-calendar"></i> ${torneo.data}
+                            </div>
+                            <h4 class="tournament-title">${torneo.nome}</h4>
+                            <div class="tournament-location">
+                                <i class="fas fa-map-marker-alt"></i> ${torneo.luogo}
+                            </div>
+                            <div class="tournament-details">
+                                <p><strong>Formato:</strong> ${torneo.formato}</p>
+                                <p><strong>Iscrizione:</strong> ${torneo.quota}</p>
+                                <p><strong>Premi:</strong> ${torneo.premi}</p>
+                            </div>
+                            <div class="tournament-action">
+                                <a href="eventi.html" class="btn btn-primary">Dettagli e Iscrizione</a>
+                            </div>
+                        `;
+                        container.appendChild(tournamentCard);
+                    });
+                });
+        }
+
+        // Inizializza la pagina quando il DOM è caricato
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

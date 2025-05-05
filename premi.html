@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premi - RedShift TournamentHub</title>
+    <link rel="stylesheet" href="redshift-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+    <!-- Header con navigazione -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-meteor"></i>
+            <span>RedShift</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="redshift-frontend.html">Home</a></li>
+                <li><a href="tornei.html">Tornei</a></li>
+                <li><a href="frontend.html">Classifiche</a></li>
+                <li><a href="regolamento.html">Regolamento</a></li>
+                <li><a href="premi.html" class="active">Premi</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <button class="btn btn-outline">Accedi</button>
+            <button class="btn btn-primary">Registrati</button>
+        </div>
+    </header>
+    
+    <!-- Contenuto principale -->
+    <main class="container">
+        <section class="page-header">
+            <h1 class="gradient-text">Premi</h1>
+            <p class="subtitle">Scopri i premi che puoi vincere partecipando ai nostri tornei</p>
+        </section>
+        
+        <!-- Sezione Classifica Punti -->
+        <section class="points-section">
+            <div class="section-header">
+                <i class="fas fa-medal trophy-icon"></i>
+                <h2 class="section-title">Classifica Punti</h2>
+                <p class="section-subtitle">I giocatori con più punti nella stagione corrente</p>
+            </div>
+            
+            <div class="table-container">
+                <table class="rankings-table">
+                    <thead>
+                        <tr>
+                            <th>Posizione</th>
+                            <th>Giocatore</th>
+                            <th>Punti Totali</th>
+                        </tr>
+                    </thead>
+                    <tbody id="puntiTotaliBody">
+                        <tr>
+                            <td colspan="3" class="loading"><i class="fas fa-spinner fa-spin"></i> Caricamento...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Sezione Tabella Premi -->
+        <section class="prizes-section">
+            <div class="section-header">
+                <i class="fas fa-gift trophy-icon"></i>
+                <h2 class="section-title">Tabella Premi</h2>
+                <p class="section-subtitle">Premi in base alla posizione nella classifica finale</p>
+            </div>
+            
+            <div class="prizes-grid">
+                <!-- Premio 1° posto -->
+                <div class="prize-card first-place">
+                    <div class="prize-position">
+                        <i class="fas fa-trophy"></i>
+                        <span>1° Posto</span>
+                    </div>
+                    <div class="prize-content">
+                        <h3 class="prize-title">Premio Campione</h3>
+                        <ul class="prize-items">
+                            <li><i class="fas fa-euro-sign"></i> €500 in contanti</li>
+                            <li><i class="fas fa-gamepad"></i> Setup Gaming Pro</li>
+                            <li><i class="fas fa-ticket-alt"></i> Accesso VIP eventi RedShift</li>
+                            <li><i class="fas fa-certificate"></i> Titolo "Campione RedShift"</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Premio 2° posto -->
+                <div class="prize-card second-place">
+                    <div class="prize-position">
+                        <i class="fas fa-medal"></i>
+                        <span>2° Posto</span>
+                    </div>
+                    <div class="prize-content">
+                        <h3 class="prize-title">Premio Finalista</h3>
+                        <ul class="prize-items">
+                            <li><i class="fas fa-euro-sign"></i> €250 in contanti</li>
+                            <li><i class="fas fa-headset"></i> Cuffie Gaming Premium</li>
+                            <li><i class="fas fa-ticket-alt"></i> Accesso eventi RedShift</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Premio 3° posto -->
+                <div class="prize-card third-place">
+                    <div class="prize-position">
+                        <i class="fas fa-medal"></i>
+                        <span>3° Posto</span>
+                    </div>
+                    <div class="prize-content">
+                        <h3 class="prize-title">Premio Semifinalista</h3>
+                        <ul class="prize-items">
+                            <li><i class="fas fa-euro-sign"></i> €100 in contanti</li>
+                            <li><i class="fas fa-mouse"></i> Mouse Gaming Pro</li>
+                            <li><i class="fas fa-tshirt"></i> T-shirt RedShift esclusiva</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tabella premi per posizioni inferiori -->
+            <div class="table-container">
+                <table class="prizes-table">
+                    <thead>
+                        <tr>
+                            <th>Posizione</th>
+                            <th>Premio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>4° - 8° posto</td>
+                            <td>
+                                <ul class="prize-list">
+                                    <li>€50 in buoni acquisto</li>
+                                    <li>Mousepad RedShift</li>
+                                    <li>50 Punti Bonus per la prossima stagione</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9° - 16° posto</td>
+                            <td>
+                                <ul class="prize-list">
+                                    <li>Mousepad RedShift</li>
+                                    <li>25 Punti Bonus per la prossima stagione</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>17° - 32° posto</td>
+                            <td>
+                                <ul class="prize-list">
+                                    <li>10 Punti Bonus per la prossima stagione</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- Sezione Punti Qualificazione -->
+        <section class="qualification-section">
+            <div class="section-header">
+                <i class="fas fa-star trophy-icon"></i>
+                <h2 class="section-title">Punti Qualificazione</h2>
+                <p class="section-subtitle">Punti necessari per qualificarsi ai tornei speciali</p>
+            </div>
+            
+            <div class="qualification-cards">
+                <!-- Qualificazione Torneo Campioni -->
+                <div class="qualification-card">
+                    <div class="qualification-header">
+                        <i class="fas fa-crown"></i>
+                        <h3>Torneo dei Campioni</h3>
+                    </div>
+                    <div class="qualification-content">
+                        <div class="qualification-points">500 punti</div>
+                        <p class="qualification-description">Torneo esclusivo per i migliori giocatori della stagione con montepremi maggiorato</p>
+                        <div class="qualification-date">Dicembre 2023</div>
+                    </div>
+                </div>
+                
+                <!-- Qualificazione Torneo Elite -->
+                <div class="qualification-card">
+                    <div class="qualification-header">
+                        <i class="fas fa-chess-king"></i>
+                        <h3>Torneo Elite</h3>
+                    </div>
+                    <div class="qualification-content">
+                        <div class="qualification-points">300 punti</div>
+                        <p class="qualification-description">Torneo per giocatori di alto livello con premi esclusivi</p>
+                        <div class="qualification-date">Settembre 2023</div>
+                    </div>
+                </div>
+                
+                <!-- Qualificazione Torneo Sfidanti -->
+                <div class="qualification-card">
+                    <div class="qualification-header">
+                        <i class="fas fa-fire"></i>
+                        <h3>Torneo Sfidanti</h3>
+                    </div>
+                    <div class="qualification-content">
+                        <div class="qualification-points">150 punti</div>
+                        <p class="qualification-description">Torneo intermedio con possibilità di qualificarsi ai tornei superiori</p>
+                        <div class="qualification-date">Giugno 2023</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="include-footer"></div>
+    </footer>
+
+    <script src="utils.js"></script>
+    <script>
+        // Script specifico per la pagina premi
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carica la classifica punti
+            loadPuntiTotaliConPosizione();
+        });
+        
+        // Funzione per caricare i punti totali con posizione
+        function loadPuntiTotaliConPosizione() {
+            database.ref('tornei').once('value')
+                .then(snapshot => {
+                    const tornei = snapshot.val() || {};
+                    const giocatoriPunti = {};
+                    
+                    // Calcola i punti totali per ogni giocatore
+                    Object.values(tornei).forEach(torneo => {
+                        const giocatori = torneo.giocatori || {};
+                        Object.keys(giocatori).forEach(giocatoreId => {
+                            const giocatore = giocatori[giocatoreId];
+                            if (!giocatoriPunti[giocatoreId]) {
+                                giocatoriPunti[giocatoreId] = {
+                                    nome: giocatore.nome,
+                                    punti: 0
+                                };
+                            }
+                            giocatoriPunti[giocatoreId].punti += giocatore.punti || 0;
+                        });
+                    });
+                    
+                    // Converti in array e ordina
+                    const giocatoriArray = Object.keys(giocatoriPunti).map(id => {
+                        return {
+                            id: id,
+                            nome: giocatoriPunti[id].nome,
+                            punti: giocatoriPunti[id].punti
+                        };
+                    });
+                    
+                    giocatoriArray.sort((a, b) => b.punti - a.punti);
+                    
+                    // Aggiorna la tabella
+                    const tbody = document.getElementById('puntiTotaliBody');
+                    
+                    if (giocatoriArray.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="3" class="no-data">Nessun dato disponibile</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    tbody.innerHTML = '';
+                    giocatoriArray.forEach((giocatore, index) => {
+                        const row = document.createElement('tr');
+                        
+                        // Aggiungi classe speciale per i primi 3 posti
+                        if (index < 3) {
+                            row.classList.add(`position-${index + 1}`);
+                        }
+                        
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td class="player-name" onclick="showUserProfile('${giocatore.id}', '${giocatore.nome}')">${giocatore.nome}</td>
+                            <td>${giocatore.punti}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error("Errore nel caricamento dei punti totali:", error);
+                    document.getElementById('puntiTotaliBody').innerHTML = `
+                        <tr>
+                            <td colspan="3" class="error">Errore nel caricamento dei dati</td>
+                        </tr>
+                    `;
+                });
+        }
+    </script>
+</body>
+</html>
